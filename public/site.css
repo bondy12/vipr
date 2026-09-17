@@ -300,3 +300,12 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
   .snake-canvas{display:none!important}
   .snake-fallback{opacity:1!important}
 }
+
+/* v0.2.3 — organic behavior pass */
+.snake-ambient{opacity:.30}
+.snake-ambient:before{opacity:.72}
+.snake-track{opacity:.52}
+.snake-readout{opacity:.72;transition:opacity .3s ease}
+.mascot-stage:hover .snake-readout{opacity:1}
+.snake-floor-shadow{opacity:.72;transform:scaleX(.96)}
+.snake-rig{transform:translateZ(0);will-change:transform}

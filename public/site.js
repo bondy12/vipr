@@ -67,55 +67,147 @@ function initSnakeRig(){
     const sw=sprite.width,sh=sprite.height;
     stage.classList.add('snake-ready');
 
-    let last=performance.now(),phase=0,pointerX=0,pointerY=0,targetX=0,targetY=0;
+    // A tiny deterministic PRNG keeps motion organic without sudden random jumps.
+    let seed=0x51A7E;
+    const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+    const pick=(a,b)=>a+(b-a)*rand();
+
+    const state={
+      x:0,y:0,rot:0,look:0,lift:0,wave:4.2,waveSpeed:.72,coil:0,
+      tx:0,ty:0,trot:0,tlook:0,tlift:0,twave:4.2,twaveSpeed:.72,tcoil:0,
+      phase:0,next:0,lastMode:'idle',dir:1,pointerX:0,pointerY:0,targetPX:0,targetPY:0
+    };
+
+    const chooseBehavior=(now)=>{
+      // Alternate the broad left/right bias so the movement feels chaotic but balanced.
+      const modes=['idle','look','crawl','crawl','watch','coil'];
+      const mode=modes[Math.floor(rand()*modes.length)];
+      let dir=state.dir;
+      if(mode==='crawl'||mode==='look'){dir*=-1;state.dir=dir}
+
+      state.tlook=0;state.tlift=0;state.tcoil=0;
+      state.twave=pick(3.4,5.4);state.twaveSpeed=pick(.58,.9);
+      state.ty=pick(-4,4);state.trot=pick(-.45,.45);
+
+      if(mode==='idle'){
+        state.tx=pick(-16,16);
+        state.tlook=pick(-.15,.15);
+        state.tlift=pick(-1.5,2.5);
+        state.twave=pick(2.2,3.4);
+        state.twaveSpeed=pick(.42,.62);
+        state.next=now+pick(1700,3200);
+      }else if(mode==='look'){
+        state.tx=pick(-12,12);
+        state.tlook=dir*pick(.75,1);
+        state.tlift=pick(4,8);
+        state.trot=dir*pick(.35,.75);
+        state.twave=pick(2.4,3.8);
+        state.twaveSpeed=pick(.42,.67);
+        state.next=now+pick(1100,2100);
+      }else if(mode==='crawl'){
+        const reach=Math.min(76,stage.clientWidth*.12);
+        state.tx=dir*pick(reach*.66,reach);
+        state.tlook=dir*pick(.35,.65);
+        state.tlift=pick(0,5);
+        state.trot=dir*pick(.15,.5);
+        state.twave=pick(5.2,7.6);
+        state.twaveSpeed=pick(.88,1.22);
+        state.next=now+pick(2600,4300);
+      }else if(mode==='watch'){
+        state.tx=pick(-26,26);
+        state.tlook=pick(-.55,.55);
+        state.tlift=pick(6,11);
+        state.trot=pick(-.25,.25);
+        state.twave=pick(1.8,3);
+        state.twaveSpeed=pick(.32,.52);
+        state.next=now+pick(1500,2900);
+      }else{
+        state.tx=pick(-18,18);
+        state.tlook=pick(-.25,.25);
+        state.tlift=pick(-2,3);
+        state.tcoil=pick(.65,1);
+        state.twave=pick(4.5,6.2);
+        state.twaveSpeed=pick(.68,.95);
+        state.next=now+pick(1400,2400);
+      }
+      state.lastMode=mode;
+    };
+
+    const spring=(value,target,dt,speed)=>value+(target-value)*(1-Math.exp(-dt*speed));
     stage.addEventListener('pointermove',e=>{
       const r=stage.getBoundingClientRect();
-      targetX=((e.clientX-r.left)/r.width-.5)*9;
-      targetY=((e.clientY-r.top)/r.height-.5)*5;
+      state.targetPX=((e.clientX-r.left)/r.width-.5)*8;
+      state.targetPY=((e.clientY-r.top)/r.height-.5)*5;
     });
-    stage.addEventListener('pointerleave',()=>{targetX=0;targetY=0});
+    stage.addEventListener('pointerleave',()=>{state.targetPX=0;state.targetPY=0});
+
+    let last=performance.now();
+    chooseBehavior(last);
 
     const draw=(now)=>{
-      const dt=Math.min(34,now-last);last=now;
-      pointerX+=(targetX-pointerX)*Math.min(1,dt*.005);
-      pointerY+=(targetY-pointerY)*Math.min(1,dt*.005);
+      const dtMs=Math.min(34,now-last);last=now;
+      const dt=dtMs/1000;
+      if(now>=state.next)chooseBehavior(now);
+
+      state.pointerX=spring(state.pointerX,state.targetPX,dt,4.2);
+      state.pointerY=spring(state.pointerY,state.targetPY,dt,4.2);
+      state.x=spring(state.x,state.tx,dt,1.35);
+      state.y=spring(state.y,state.ty,dt,1.55);
+      state.rot=spring(state.rot,state.trot,dt,1.9);
+      state.look=spring(state.look,state.tlook,dt,2.05);
+      state.lift=spring(state.lift,state.tlift,dt,1.7);
+      state.wave=spring(state.wave,state.twave,dt,1.45);
+      state.waveSpeed=spring(state.waveSpeed,state.twaveSpeed,dt,1.2);
+      state.coil=spring(state.coil,state.tcoil,dt,1.6);
+      state.phase+=dt*state.waveSpeed*3.05;
 
       const cw=snakeCanvas.width,ch=snakeCanvas.height;
       ctx.clearRect(0,0,cw,ch);
-
-      const t=now/1000;
-      const travel=Math.sin(t*.46);
-      const velocity=Math.cos(t*.46);
-      const maxTravel=cw*.105;
-      const crawlX=travel*maxTravel + Math.sin(t*.17+1.1)*8 + pointerX;
-      const crawlY=Math.sin(t*.72+.6)*3.5 + pointerY;
-      const rot=Math.sin(t*.38-.4)*.012;
-
-      // The travelling body wave advances slightly faster when the mascot is moving.
-      phase += dt*(.0025 + Math.abs(velocity)*.0018);
-
       const scale=Math.min((cw*.62)/sw,(ch*.70)/sh);
       const dw=sw*scale,dh=sh*scale;
-      const baseX=(cw-dw)/2+crawlX,baseY=(ch-dh)/2+crawlY;
+      const baseX=(cw-dw)/2+state.x+state.pointerX;
+      const baseY=(ch-dh)/2+state.y+state.pointerY;
 
       ctx.save();
-      ctx.translate(cw/2+crawlX,ch/2+crawlY);
-      ctx.rotate(rot);
-      ctx.translate(-(cw/2+crawlX),-(ch/2+crawlY));
+      ctx.translate(cw/2+state.x,ch/2+state.y);
+      ctx.rotate(state.rot*Math.PI/180);
+      ctx.translate(-(cw/2+state.x),-(ch/2+state.y));
 
-      // Fine horizontal slices create an S-wave through the exact original artwork.
-      const slice=3;
+      // The original mascot is preserved. Thin source rows are only displaced,
+      // producing a travelling S-wave and a softer delayed tail.
+      const slice=2;
       for(let sy=0;sy<sh;sy+=slice){
         const nh=Math.min(slice,sh-sy);
         const ny=sy/sh;
-        const envelope=.34 + .66*Math.sin(Math.PI*ny);
-        const headLead=ny<.42 ? (1-ny/.42)*2.4 : 0;
-        const wave=(Math.sin(phase*3.3-ny*6.9)*5.8 + Math.sin(phase*1.45-ny*3.2)*2.3)*envelope;
-        const probe=headLead*Math.sin(t*1.15)*1.35;
-        const dx=wave+probe;
-        const dy=Math.sin(phase*2.2-ny*4.4)*.65*envelope;
-        ctx.drawImage(sprite,0,sy,sw,nh,baseX+dx,baseY+sy*scale+dy,dw,nh*scale+0.65);
+
+        // Body motion: strongest through the middle, quieter at head/tail.
+        const bodyEnvelope=.22+.78*Math.sin(Math.PI*ny);
+        const tailLag=Math.max(0,(ny-.58)/.42);
+        const headZone=Math.max(0,1-ny/.44);
+
+        const primary=Math.sin(state.phase-ny*7.4)*state.wave;
+        const secondary=Math.sin(state.phase*.57-ny*3.25+1.4)*(state.wave*.34);
+        const delayedTail=Math.sin(state.phase*.82-ny*9.1-1.1)*(state.wave*.42)*tailLag;
+
+        // "Looking": the head/neck shifts and rises independently while the body stays planted.
+        const lookX=state.look*10.5*headZone;
+        const lookY=-state.lift*headZone;
+        const neckCounter=-state.look*2.7*Math.max(0,1-Math.abs(ny-.43)/.22);
+
+        // Coil compresses the lower body very slightly during a pause/turn.
+        const coilShift=state.coil*Math.sin((ny-.56)*Math.PI*2.25)*3.1*Math.max(0,(ny-.48)/.52);
+
+        const dx=(primary+secondary)*bodyEnvelope+delayedTail+lookX+neckCounter+coilShift;
+        const dy=Math.cos(state.phase*.74-ny*4.7)*.8*bodyEnvelope+lookY;
+
+        // A tiny horizontal breathing change sells weight without changing identity.
+        const breathe=1+(Math.sin(now*.0014+ny*2.3)*.0018)*(1-headZone*.65);
+        const rowW=dw*breathe;
+        const rowX=baseX+dx-(rowW-dw)/2;
+        ctx.drawImage(sprite,0,sy,sw,nh,rowX,baseY+sy*scale+dy,rowW,nh*scale+.75);
       }
+
+      // Soft grounded shadow follows the body rather than floating with it.
       ctx.restore();
       requestAnimationFrame(draw);
     };
