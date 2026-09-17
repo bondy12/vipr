@@ -56,7 +56,6 @@ function buildForegroundSprite(img){
 
 function initSnakeRig(){
   if(!stage||!snakeCanvas||!snakeSource)return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const ctx=snakeCanvas.getContext('2d');
   if(!ctx)return;
   ctx.imageSmoothingEnabled=false;
@@ -87,7 +86,7 @@ function initSnakeRig(){
 
     const bounds=()=>{
       const w=stage.clientWidth||560,h=stage.clientHeight||560;
-      return {x:Math.min(118,w*.22),y:Math.min(62,h*.105)};
+      return {x:Math.min(142,w*.255),y:Math.min(82,h*.14)};
     };
 
     const chooseMode=(now)=>{
@@ -99,8 +98,8 @@ function initSnakeRig(){
 
       if(s.mode==='watch'){
         s.targetSpeed=0;
-        s.targetLook=pick(-1,1);
-        s.targetLift=pick(7,13);
+        s.targetLook=pick(-1.15,1.15);
+        s.targetLift=pick(9,16);
         s.targetWave=pick(1.2,2.1);
         s.nextMode=now+pick(1300,2800);
       }else if(s.mode==='pause'){
@@ -110,7 +109,7 @@ function initSnakeRig(){
         s.targetWave=pick(1.5,2.6);
         s.nextMode=now+pick(800,1700);
       }else if(s.mode==='turn'){
-        s.targetSpeed=pick(10,18);
+        s.targetSpeed=pick(14,24);
         s.dir+=pick(.7,1.25)*(rand()<.5?-1:1);
         s.wander=pick(-1,1);
         s.targetLook=clamp(Math.cos(s.dir)*.65,-.7,.7);
@@ -118,11 +117,11 @@ function initSnakeRig(){
         s.targetWave=pick(3.5,5.2);
         s.nextMode=now+pick(850,1500);
       }else{
-        s.targetSpeed=pick(18,34);
+        s.targetSpeed=pick(24,42);
         s.wander=pick(-1,1);
         s.targetLook=clamp(Math.cos(s.dir)*.5,-.6,.6);
         s.targetLift=pick(0,5);
-        s.targetWave=pick(4.2,6.4);
+        s.targetWave=pick(5.2,8.0);
         s.nextMode=now+pick(2100,4300);
       }
     };
@@ -183,7 +182,7 @@ function initSnakeRig(){
       if(s.mode==='wander')s.targetLook=ease(s.targetLook,travelLook*.58,dt,.9);
 
       const activity=clamp(Math.hypot(s.vx,s.vy)/28,0,1);
-      s.targetLean=clamp(s.vx/36,-1,1)*1.05;
+      s.targetLean=clamp(s.vx/42,-1,1)*2.15;
       s.bodyLean=ease(s.bodyLean,s.targetLean,dt,2.1);
       s.phase+=dt*(1.65+activity*2.25);
 
@@ -216,8 +215,8 @@ function initSnakeRig(){
           +Math.sin(s.phase*.61-ny*3.4+1.1)*s.wave*.34)*(.18+.82*middle);
 
         const tailLag=Math.sin(s.phase*.82-ny*9.7-1.4)*s.wave*.48*tail;
-        const headScan=s.look*15.5*head;
-        const neckCounter=-s.look*5.2*neck;
+        const headScan=s.look*21*head;
+        const neckCounter=-s.look*7.2*neck;
         const headRise=-s.lift*head;
 
         // During pauses the head still makes tiny exploratory micro-movements.
