@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#050806" />
+  <meta name="description" content="VIPR â€” wallet reputation and behavior receipts for Robinhood Chain." />
+  <title>VIPR â€” Every wallet leaves tracks.</title>
+  <link rel="icon" href="/assets/vipr-snake.png" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="landing">
+  <div class="noise"></div>
+  <header class="site-nav shell">
+    <a class="brand" href="/">
+      <img src="/assets/vipr-snake.png" alt="VIPR snake" />
+      <span>VIPR</span>
+      <small>WALLET INTELLIGENCE</small>
+    </a>
+    <nav>
+      <a href="#method">Method</a>
+      <a href="https://github.com/bondy12/vipr">GitHub</a>
+      <a class="nav-cta" href="/terminal">Open terminal <span>â†—</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse-dot"></span> ROBINHOOD CHAIN Â· READ ONLY Â· CHAIN 4663</div>
+        <h1>Every wallet<br/><em>leaves tracks.</em></h1>
+        <p class="hero-lede">VIPR turns wallet behavior into evidence-backed reputation: timing, exits, discipline, survival, repeatability and provenance â€” without touching the wallet.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="/terminal">ENTER THE DESK <span>â†—</span></a>
+          <button class="button ghost" id="hero-demo">RUN SYNTHETIC DEMO</button>
+        </div>
+        <div class="hero-footnote"><span>NO KEY</span><span>NO SIGNER</span><span>NO EXECUTION</span></div>
+      </div>
+
+      <div class="hero-desk" aria-label="VIPR score preview">
+        <div class="desk-topline">
+          <span>VIPR / WALLET RECEIPT</span>
+          <span class="live-pill">â— DEMO</span>
+        </div>
+        <div class="wallet-line"><code>0x6900â€¦0420</code><span>FIRST WAVE</span></div>
+        <div class="rank-block">
+          <div><span class="rank-number">982</span><span class="rank-denom">/1000</span></div>
+          <span class="rank-caption">REPUTATION RANK</span>
+        </div>
+        <div class="score-bars">
+          <div data-score="91"><span>TIMING</span><i><b></b></i><strong>91</strong></div>
+          <div data-score="100"><span>EXITS</span><i><b></b></i><strong>100</strong></div>
+          <div data-score="100"><span>DISCIPLINE</span><i><b></b></i><strong>100</strong></div>
+          <div data-score="100"><span>SURVIVAL</span><i><b></b></i><strong>100</strong></div>
+          <div data-score="100"><span>REPEAT</span><i><b></b></i><strong>100</strong></div>
+          <div data-score="100"><span>EVIDENCE</span><i><b></b></i><strong>100</strong></div>
+        </div>
+        <div class="receipt-grid">
+          <div><small>MEDIAN HOLD</small><b>26m</b></div>
+          <div><small>EARLY HITS</small><b>90%</b></div>
+          <div><small>ROUNDTRIPS</small><b>0%</b></div>
+          <div><small>MAX CONC.</small><b>24%</b></div>
+        </div>
+        <div class="badges-line"><span>EARLY BLOOD</span><span>DIAMOND SCALES</span><span>CLEAN RECEIPTS</span></div>
+        <div class="corner-snake"><img src="/assets/vipr-snake.png" alt="" /></div>
+      </div>
+    </section>
+
+    <section class="scan-section shell" id="scan">
+      <div class="section-kicker">01 / INSPECT</div>
+      <div class="scan-head">
+        <div>
+          <h2>Read the wallet.<br/>Not the leaderboard.</h2>
+          <p>Paste a Robinhood Chain wallet for a live read-only transfer tape, or use the synthetic demo for the full reputation pipeline.</p>
+        </div>
+        <div class="network-state" id="network-state"><span></span> checking public RPC</div>
+      </div>
+      <form class="scan-box" id="wallet-form">
+        <div class="scan-input-wrap">
+          <span class="prompt">&gt;</span>
+          <input id="wallet-input" autocomplete="off" spellcheck="false" placeholder="0x wallet address" aria-label="Wallet address" />
+          <button type="button" id="demo-button">USE DEMO</button>
+        </div>
+        <button class="button primary inspect-button" type="submit">INSPECT WALLET â†—</button>
+      </form>
+      <div class="scan-result" id="scan-result" hidden></div>
+    </section>
+
+    <section class="method shell" id="method">
+      <div class="section-kicker">02 / METHOD</div>
+      <div class="method-title">
+        <h2>A score is useless<br/>without the receipt.</h2>
+        <p>VIPR keeps six dimensions separate. Weak evidence reduces the rank instead of being silently converted into certainty.</p>
+      </div>
+      <div class="dimension-grid">
+        <article><span>01</span><h3>Timing</h3><p>How early a wallet enters relative to observable market age â€” only when market birth is known.</p><b>20%</b></article>
+        <article><span>02</span><h3>Exits</h3><p>Whether gains make it to realized exits instead of disappearing in a roundtrip.</p><b>18%</b></article>
+        <article><span>03</span><h3>Discipline</h3><p>Concentration, churn and repeat behavior across independent positions.</p><b>17%</b></article>
+        <article><span>04</span><h3>Survival</h3><p>What happens when launches fail, liquidity dries up or the thesis breaks.</p><b>13%</b></article>
+        <article><span>05</span><h3>Repeatability</h3><p>One lucky moonshot is not a pattern. Independent complete samples matter.</p><b>17%</b></article>
+        <article><span>06</span><h3>Evidence</h3><p>Provenance, tape completeness and whether the observations can actually support the claim.</p><b>15%</b></article>
+      </div>
+    </section>
+
+    <section class="proof shell">
+      <div class="proof-copy">
+        <div class="section-kicker">03"ò$õTäD%“ÂöF—cà¢Æƒ#åF†R6æ¶RvF6†W2ãÆ'"óå–÷RFV6–FRãÂöƒ#à¢Çåd•"†2æò6–væ–ærF‚âF†R&öGV7B—2â–çFVÆÆ–vVæ6RÆ–W#¢6öÆÆV7BV&Æ–2ö'6W'fF–öç2Â&W6W'fR&÷fVææ6RÂW‡Æ–âF†R&V†f–÷"Â7F÷F†W&RãÂ÷à¢Æ‡&VcÒ&‡GG3¢òöv—F‡V"æ6öÒö&öæG“"÷f—"ö&Æö"öÖ–âöFö72õ4dUE’æÖB#å$TBD„R4TdUE’$õTäD%’(isÂöà¢ÂöF—cà¢ÆF—b6Æ73Ò'&ööbÖ6&B#à¢ÆF—cãÇ7ãæWF…÷vWDÆöw3Â÷7ããÆ#å$TCÂö#ãÂöF—cà¢ÆF—cãÇ7ãæWF…ö6ÆÃÂ÷7ããÆ#å$TCÂö#ãÂöF—cà¢ÆF—cãÇ7ãæWF…övWEG&ç67F–öå&V6V—CÂ÷7ããÆ#å$TCÂö#ãÂöF—cà¢ÆF—b6Æ73Ò&&Æö6¶VB#ãÇ7ãç6–våG&ç67F–öãÂ÷7ããÆ#ä%4TåCÂö#ãÂöF—cà¢ÆF—b6Æ73Ò&&Æö6¶VB#ãÇ7ãæWF…÷6VæE&uG&ç67F–öãÂ÷7ããÆ#ä%4TåCÂö#ãÂöF—cà¢ÆF—b6Æ73Ò&&Æö6¶VB#ãÇ7ãå$•dDUô´U“Â÷7ããÆ#ä%4TåCÂö#ãÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢ÂöÖ–ãà ¢Æfö÷FW"6Æ73Ò'6†VÆÂ#à¢ÆF—b6Æ73Ò&fö÷FW"Ö'&æB#ãÆ–Ör7&3Ò"ö76WG2÷f—"×6æ¶Rçær"ÇCÒ""óãÇ7ãåd•#Â÷7ããÂöF—cà¢Çä–æFWVæFVçB÷Vâ×6÷W&6RvÆÆWB–çFVÆÆ–vVæ6Rf÷"&ö&–æ†ööB6†–âãÂ÷à¢ÆF—cãÆ‡&VcÒ"÷FW&Ö–æÂ#åFW&Ö–æÃÂöãÆ‡&VcÒ&‡GG3¢òöv—F‡V"æ6öÒö&öæG“"÷f—"#äv—D‡V#ÂöãÂöF—cà¢Âöfö÷FW#à ¢Ç67&—BG—SÒ&ÖöGVÆR"7&3Ò"öæ§2#ãÂ÷67&—Cà£Âö&öG“à£Âö‡FÖÃà
