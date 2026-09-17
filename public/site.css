@@ -320,3 +320,21 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
 .snake-floor-shadow{opacity:.62;filter:blur(10px)}
 @media(max-width:980px){.snake-rig{width:min(470px,74vw)}}
 @media(max-width:640px){.snake-rig{width:min(365px,88vw)}}
+
+/* v0.2.5 — clean mascot stage: no baked glow, no tracks */
+.snake-ambient,
+.snake-ambient:before,
+.snake-track,
+.snake-track:after{
+  display:none!important;
+  opacity:0!important;
+}
+.mascot-stage{
+  background:none!important;
+}
+.mascot-stage:before,
+.mascot-stage:after{
+  content:none!important;
+  display:none!important;
+}
+.motion-build{display:none!important}
