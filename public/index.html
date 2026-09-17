@@ -16,7 +16,7 @@
 
   <header class="nav wrap">
     <a class="brand" href="/" aria-label="VIPR home">
-      <img src="/assets/vipr-snake.png" alt="" />
+      <img src="/assets/vipr-snake-transparent.webp" alt="" />
       <span>VIPR</span>
       <small>WALLET INTELLIGENCE</small>
     </a>
@@ -47,22 +47,18 @@
       </div>
 
       <div class="mascot-stage reveal" id="mascot-stage" aria-label="VIPR mascot">
-        <div class="orbit orbit-a"></div>
-        <div class="orbit orbit-b"></div>
-        <svg class="trail-svg" viewBox="0 0 620 620" aria-hidden="true">
-          <path d="M88 372 C155 156, 373 100, 535 241 C627 321, 570 488, 413 514 C282 536, 214 458, 246 376 C280 289, 418 305, 459 381" />
-        </svg>
-        <div class="signal-chip chip-a"><small>ENTRY</small><b>+04m</b></div>
-        <div class="signal-chip chip-b"><small>EVIDENCE</small><b>100</b></div>
-        <div class="signal-chip chip-c"><small>EXIT</small><b>3.90×</b></div>
-        <div class="mascot-parallax">
-          <div class="mascot-float">
-            <div class="snake-glow"></div>
-            <img class="snake-hero" src="/assets/vipr-snake.png" alt="VIPR pixel snake mascot" />
-            <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span>
-          </div>
+        <div class="snake-ambient" aria-hidden="true">
+          <span class="snake-track track-one"></span>
+          <span class="snake-track track-two"></span>
         </div>
-        <div class="mascot-caption"><span>VIPR / OBSERVER-01</span><b>WATCHES. DOESN'T TOUCH.</b></div>
+        <div class="snake-creature" id="snake-creature">
+          <div class="snake-shadow" aria-hidden="true"></div>
+          <img class="snake-part snake-part-head" src="/assets/vipr-snake-transparent.webp" alt="VIPR pixel snake mascot" />
+          <img class="snake-part snake-part-body" src="/assets/vipr-snake-transparent.webp" alt="" aria-hidden="true" />
+        </div>
+        <div class="snake-readout readout-left"><small>TRACKING</small><b>WALLET TAPE</b></div>
+        <div class="snake-readout readout-right"><small>MODE</small><b>READ ONLY</b></div>
+        <div class="mascot-caption"><span>VIPR / OBSERVER-01</span><b>ALIVE ON THE TAPE.</b></div>
       </div>
     </section>
 
@@ -265,7 +261,7 @@
           </div>
         </div>
         <div class="build-card reveal">
-          <img src="/assets/vipr-snake.png" alt="VIPR snake" />
+          <img src="/assets/vipr-snake-transparent.webp" alt="VIPR snake" />
           <div>
             <small>PROJECT STATUS</small><strong>VIPR v0.2</strong>
             <p>Browser desk · terminal · deterministic scoring · evidence ledger · live transfer tape.</p>
@@ -278,7 +274,7 @@
       <div class="wrap final-inner reveal">
         <div class="final-mascot">
           <div class="final-glow"></div>
-          <img src="/assets/vipr-snake.png" alt="" />
+          <img src="/assets/vipr-snake-transparent.webp" alt="" />
         </div>
         <small>VIPR / ROBINHOOD CHAIN</small>
         <h2>Don't copy the screenshot.<br/><em>Read the tracks.</em></h2>
@@ -291,7 +287,7 @@
   </main>
 
   <footer class="footer wrap">
-    <div class="footer-brand"><img src="/assets/vipr-snake.png" alt="" /><b>VIPR</b><span>Every wallet leaves tracks.</span></div>
+    <div class="footer-brand"><img src="/assets/vipr-snake-transparent.webp" alt="" /><b>VIPR</b><span>Every wallet leaves tracks.</span></div>
     <div class="footer-links">
       <a href="/terminal">Terminal</a>
       <a href="https://github.com/bondy12/vipr" target="_blank" rel="noreferrer">Repo</a>

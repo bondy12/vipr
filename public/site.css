@@ -71,3 +71,131 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
 @media(max-width:640px){
   .wrap{width:min(100% - 26px,1240px)}.nav{height:74px}.brand small,.nav-cta{display:none}.hero{padding:54px 0 70px}.hero h1{font-size:62px}.lede{font-size:16px}.hero-actions{flex-direction:column}.hero-actions .btn{width:100%}.trust-row{gap:10px;flex-wrap:wrap}.mascot-stage{height:430px}.orbit-a{width:360px;height:360px}.orbit-b{width:260px;height:260px}.trail-svg{width:400px;height:400px}.snake-hero{width:250px;max-width:72vw}.signal-chip{padding:7px 9px}.chip-a{left:0}.chip-b{right:0}.chip-c{left:4%;bottom:12%}.mascot-caption{width:94%}.section{padding:84px 0}.section-intro h2,.pipeline-head h2,.sticky-copy h2,.receipt-copy h2,.terminal-copy h2,.boundary-title h2,.build-copy h2{font-size:46px}.wallet-form{grid-template-columns:1fr}.archetype-grid,.scenario-grid{grid-template-columns:1fr}.metric-card{grid-template-columns:36px 1fr 35px;padding:20px}.result-grid{grid-template-columns:1fr 1fr}.result-head{flex-direction:column}.terminal-window>header b{display:none}.receipt-console{padding:17px}.console-rank strong{font-size:55px}.footer{grid-template-columns:1fr;padding:35px 0}.footer>p{text-align:left;justify-self:start}.footer-links{flex-wrap:wrap}.build-card{flex-direction:column;align-items:flex-start}.social-actions{flex-direction:column}.social-actions .btn{width:100%}
 }
+
+/* v0.2.1 — living transparent VIPR mascot */
+.mascot-stage{
+  overflow:visible;
+  height:620px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  isolation:isolate;
+}
+.mascot-stage:before{display:none!important}
+.snake-ambient{
+  position:absolute;
+  inset:12% 4% 10%;
+  pointer-events:none;
+  opacity:.55;
+}
+.snake-ambient:before{
+  content:"";
+  position:absolute;
+  left:50%;top:49%;
+  width:360px;height:360px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(183,255,25,.105),rgba(70,126,34,.025) 48%,transparent 70%);
+  filter:blur(12px);
+}
+.snake-track{
+  position:absolute;
+  left:9%;right:9%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(183,255,25,.18) 28%,rgba(183,255,25,.07) 72%,transparent);
+  overflow:hidden;
+}
+.track-one{top:69%;transform:rotate(-4deg)}
+.track-two{top:74%;transform:rotate(3deg);opacity:.36}
+.snake-track:after{
+  content:"";
+  position:absolute;
+  top:-2px;left:-10%;
+  width:54px;height:5px;
+  background:linear-gradient(90deg,transparent,var(--lime),transparent);
+  filter:blur(.2px);
+  animation:snakeTrackPulse 5.6s linear infinite;
+}
+.track-two:after{animation-delay:2.1s;animation-duration:7.3s}
+@keyframes snakeTrackPulse{to{left:110%}}
+
+.snake-creature{
+  --crawl-x:0px;--crawl-y:0px;--crawl-r:0deg;
+  --head-x:0px;--head-y:0px;--head-r:0deg;
+  --body-r:0deg;--body-sx:1;--body-sy:1;
+  position:relative;
+  width:min(390px,68vw);
+  aspect-ratio:300/314;
+  z-index:4;
+  transform:translate3d(var(--crawl-x),var(--crawl-y),0) rotate(var(--crawl-r));
+  will-change:transform;
+  filter:drop-shadow(0 34px 30px rgba(0,0,0,.42));
+}
+.snake-part{
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  object-fit:contain;
+  image-rendering:pixelated;
+  user-select:none;
+  pointer-events:none;
+  will-change:transform;
+}
+.snake-part-head{
+  clip-path:polygon(0 0,100% 0,100% 61%,0 61%);
+  transform-origin:51% 58%;
+  transform:translate3d(var(--head-x),var(--head-y),0) rotate(var(--head-r));
+  z-index:3;
+}
+.snake-part-body{
+  clip-path:polygon(0 57%,100% 57%,100% 100%,0 100%);
+  transform-origin:50% 72%;
+  transform:rotate(var(--body-r)) scaleX(var(--body-sx)) scaleY(var(--body-sy));
+  z-index:2;
+}
+.snake-shadow{
+  position:absolute;
+  z-index:1;
+  left:17%;right:13%;bottom:5%;
+  height:13%;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%);
+  filter:blur(9px);
+  transform:translateY(12px) scaleX(1.05);
+}
+.snake-readout{
+  position:absolute;
+  z-index:5;
+  font-family:var(--mono);
+  pointer-events:none;
+  padding:8px 10px;
+  border-left:1px solid rgba(183,255,25,.34);
+  background:linear-gradient(90deg,rgba(8,17,9,.72),transparent);
+}
+.snake-readout small{display:block;font-size:7px;letter-spacing:.14em;color:#5e6c5c}
+.snake-readout b{display:block;margin-top:4px;font-size:9px;letter-spacing:.08em;color:#a8b9a5}
+.readout-left{left:6%;top:30%}
+.readout-right{right:5%;bottom:28%;text-align:right;border-left:0;border-right:1px solid rgba(183,255,25,.34);background:linear-gradient(270deg,rgba(8,17,9,.72),transparent)}
+.mascot-caption{bottom:4%}
+
+/* Disable previous floating-card motion if cached CSS rules still match descendants. */
+.mascot-stage .orbit,.mascot-stage .trail-svg,.mascot-stage .signal-chip,.mascot-stage .mascot-parallax,.mascot-stage .mascot-float,.mascot-stage .snake-glow,.mascot-stage .spark{display:none!important}
+
+.build-card img,.final-mascot img{
+  background:transparent!important;
+  mix-blend-mode:normal;
+}
+
+@media(max-width:980px){
+  .mascot-stage{height:540px}
+  .snake-creature{width:min(360px,66vw)}
+}
+@media(max-width:640px){
+  .mascot-stage{height:430px}
+  .snake-creature{width:min(300px,74vw)}
+  .snake-readout{display:none}
+  .snake-ambient{inset:8% 0 8%}
+}
+@media(prefers-reduced-motion:reduce){
+  .snake-track:after{animation:none}
+  .snake-creature,.snake-part-head,.snake-part-body{transform:none!important}
+}

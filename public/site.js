@@ -7,11 +7,46 @@ const short=(a)=>a?`${a.slice(0,6)}…${a.slice(-4)}`:'—';
 const glow=$('.cursor-glow');
 window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const stage=$('#mascot-stage');
-stage?.addEventListener('pointermove',e=>{
-  const r=stage.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-  stage.style.setProperty('--mx',(x*18).toFixed(1)+'px');stage.style.setProperty('--my',(y*14).toFixed(1)+'px');
-});
-stage?.addEventListener('pointerleave',()=>{stage.style.setProperty('--mx','0px');stage.style.setProperty('--my','0px')});
+const creature=$('#snake-creature');
+if(stage&&creature&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  let targetPX=0,targetPY=0,px=0,py=0,last=performance.now();
+  stage.addEventListener('pointermove',e=>{
+    const r=stage.getBoundingClientRect();
+    targetPX=((e.clientX-r.left)/r.width-.5)*22;
+    targetPY=((e.clientY-r.top)/r.height-.5)*14;
+  });
+  stage.addEventListener('pointerleave',()=>{targetPX=0;targetPY=0});
+  const animateSnake=(now)=>{
+    const dt=Math.min(32,now-last); last=now;
+    const spring=Math.min(1,dt*.0048);
+    px+=(targetPX-px)*spring; py+=(targetPY-py)*spring;
+
+    const ampX=Math.min(72,stage.clientWidth*.115);
+    const crawlX=Math.sin(now*.00043)*ampX + Math.sin(now*.00017+1.25)*14 + px;
+    const crawlY=Math.sin(now*.00068+.85)*9 + Math.cos(now*.00031)*4 + py;
+    const crawlR=Math.sin(now*.00039-.5)*1.05;
+
+    // Head leads the motion; lower coil follows more slowly.
+    const headR=Math.sin(now*.00105)*1.85 + Math.sin(now*.00037+1.7)*.75;
+    const headX=Math.sin(now*.00092+.45)*3.2;
+    const headY=Math.cos(now*.00083)*2.1;
+    const bodyR=Math.sin(now*.00053+2.2)*.6;
+    const bodySX=1+Math.sin(now*.00072+1.4)*.006;
+    const bodySY=1-Math.sin(now*.00072+1.4)*.004;
+
+    creature.style.setProperty('--crawl-x',crawlX.toFixed(2)+'px');
+    creature.style.setProperty('--crawl-y',crawlY.toFixed(2)+'px');
+    creature.style.setProperty('--crawl-r',crawlR.toFixed(3)+'deg');
+    creature.style.setProperty('--head-r',headR.toFixed(3)+'deg');
+    creature.style.setProperty('--head-x',headX.toFixed(2)+'px');
+    creature.style.setProperty('--head-y',headY.toFixed(2)+'px');
+    creature.style.setProperty('--body-r',bodyR.toFixed(3)+'deg');
+    creature.style.setProperty('--body-sx',bodySX.toFixed(4));
+    creature.style.setProperty('--body-sy',bodySY.toFixed(4));
+    requestAnimationFrame(animateSnake);
+  };
+  requestAnimationFrame(animateSnake);
+}
 
 const io=new IntersectionObserver(entries=>entries.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.14});
 $$('.reveal').forEach(el=>io.observe(el));
