@@ -2,6 +2,20 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)\\.html",
+      "headers": [{"key":"Cache-Control","value":"no-store, max-age=0"}]
+    },
+    {
+      "source": "/site.js",
+      "headers": [{"key":"Cache-Control","value":"no-store, max-age=0"}]
+    },
+    {
+      "source": "/site.css",
+      "headers": [{"key":"Cache-Control","value":"no-store, max-age=0"}]
+    }
+  ],
   "rewrites": [
     { "source": "/terminal", "destination": "/terminal.html" }
   ]
