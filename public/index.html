@@ -4,104 +4,302 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050806" />
-  <meta name="description" content="VIPR â€” wallet reputation and behavior receipts for Robinhood Chain." />
+  <meta name="description" content="VIPR â€” evidence-backed wallet reputation for Robinhood Chain." />
   <title>VIPR â€” Every wallet leaves tracks.</title>
   <link rel="icon" href="/assets/vipr-snake.png" />
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/site.css" />
 </head>
-<body class="landing">
-  <div class="noise"></div>
-  <header class="site-nav shell">
-    <a class="brand" href="/">
-      <img src="/assets/vipr-snake.png" alt="VIPR snake" />
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <header class="nav wrap">
+    <a class="brand" href="/" aria-label="VIPR home">
+      <img src="/assets/vipr-snake.png" alt="" />
       <span>VIPR</span>
       <small>WALLET INTELLIGENCE</small>
     </a>
     <nav>
+      <a href="#inspect">Inspect</a>
       <a href="#method">Method</a>
-      <a href="https://github.com/bondy12/vipr">GitHub</a>
-      <a class="nav-cta" href="/terminal">Open terminal <span>â†—</span></a>
+      <a href="#archetypes">Archetypes</a>
+      <a href="/terminal">Terminal</a>
+      <a href="https://github.com/bondy12" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://x.com/bondy_inx" target="_blank" rel="noreferrer">X</a>
     </nav>
+    <a class="nav-cta" href="/terminal">OPEN DESK <span>â†—</span></a>
   </header>
 
   <main>
-    <section class="hero shell">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="pulse-dot"></span> ROBINHOOD CHAIN Â· READ ONLY Â· CHAIN 4663</div>
+    <section class="hero wrap">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span class="status-dot"></span> ROBINHOOD CHAIN Â· READ ONLY Â· CHAIN 4663</div>
         <h1>Every wallet<br/><em>leaves tracks.</em></h1>
-        <p class="hero-lede">VIPR turns wallet behavior into evidence-backed reputation: timing, exits, discipline, survival, repeatability and provenance â€” without touching the wallet.</p>
+        <p class="lede">VIPR turns wallet behavior into an evidence-backed reputation profile: timing, exits, discipline, survival, repeatability and provenance â€” without touching the wallet.</p>
         <div class="hero-actions">
-          <a class="button primary" href="/terminal">ENTER THE DESK <span>â†—</span></a>
-          <button class="button ghost" id="hero-demo">RUN SYNTHETIC DEMO</button>
+          <a class="btn btn-primary" href="/terminal">ENTER THE DESK <span>â†—</span></a>
+          <button class="btn btn-secondary" id="hero-demo">RUN LIVE DEMO</button>
         </div>
-        <div class="hero-footnote"><span>NO KEY</span><span>NO SIGNER</span><span>NO EXECUTION</span></div>
+        <div class="trust-row">
+          <span>NO PRIVATE KEY</span><span>NO SIGNER</span><span>NO EXECUTION</span>
+        </div>
       </div>
 
-      <div class="hero-desk" aria-label="VIPR score preview">
-        <div class="desk-topline">
-          <span>VIPR / WALLET RECEIPT</span>
-          <span class="live-pill">â— DEMO</span>
+      <div class="mascot-stage reveal" id="mascot-stage" aria-label="VIPR mascot">
+        <div class="orbit orbit-a"></div>
+        <div class="orbit orbit-b"></div>
+        <svg class="trail-svg" viewBox="0 0 620 620" aria-hidden="true">
+          <path d="M88 372 C155 156, 373 100, 535 241 C627 321, 570 488, 413 514 C282 536, 214 458, 246 376 C280 289, 418 305, 459 381" />
+        </svg>
+        <div class="signal-chip chip-a"><small>ENTRY</small><b>+04m</b></div>
+        <div class="signal-chip chip-b"><small>EVIDENCE</small><b>100</b></div>
+        <div class="signal-chip chip-c"><small>EXIT</small><b>3.90Ã—</b></div>
+        <div class="mascot-parallax">
+          <div class="mascot-float">
+            <div class="snake-glow"></div>
+            <img class="snake-hero" src="/assets/vipr-snake.png" alt="VIPR pixel snake mascot" />
+            <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span><span class="spark s4"></span>
+          </div>
         </div>
-        <div class="wallet-line"><code>0x6900â€¦0420</code><span>FIRST WAVE</span></div>
-        <div class="rank-block">
-          <div><span class="rank-number">982</span><span class="rank-denom">/1000</span></div>
-          <span class="rank-caption">REPUTATION RANK</span>
-        </div>
-        <div class="score-bars">
-          <div data-score="91"><span>TIMING</span><i><b></b></i><strong>91</strong></div>
-          <div data-score="100"><span>EXITS</span><i><b></b></i><strong>100</strong></div>
-          <div data-score="100"><span>DISCIPLINE</span><i><b></b></i><strong>100</strong></div>
-          <div data-score="100"><span>SURVIVAL</span><i><b></b></i><strong>100</strong></div>
-          <div data-score="100"><span>REPEAT</span><i><b></b></i><strong>100</strong></div>
-          <div data-score="100"><span>EVIDENCE</span><i><b></b></i><strong>100</strong></div>
-        </div>
-        <div class="receipt-grid">
-          <div><small>MEDIAN HOLD</small><b>26m</b></div>
-          <div><small>EARLY HITS</small><b>90%</b></div>
-          <div><small>ROUNDTRIPS</small><b>0%</b></div>
-          <div><small>MAX CONC.</small><b>24%</b></div>
-        </div>
-        <div class="badges-line"><span>EARLY BLOOD</span><span>DIAMOND SCALES</span><span>CLEAN RECEIPTS</span></div>
-        <div class="corner-snake"><img src="/assets/vipr-snake.png" alt="" /></div>
+        <div class="mascot-caption"><span>VIPR / OBSERVER-01</span><b>WATCHES. DOESN'T TOUCH.</b></div>
       </div>
     </section>
 
-    <section class="scan-section shell" id="scan">
-      <div class="section-kicker">01 / INSPECT</div>
-      <div class="scan-head">
-        <div>
-          <h2>Read the wallet.<br/>Not the leaderboard.</h2>
-          <p>Paste a Robinhood Chain wallet for a live read-only transfer tape, or use the synthetic demo for the full reputation pipeline.</p>
-        </div>
-        <div class="network-state" id="network-state"><span></span> checking public RPC</div>
+    <section class="ticker" aria-label="VIPR capabilities">
+      <div class="ticker-track">
+        <span>WALLET REPUTATION</span><i>â—†</i><span>BEHAVIOR TAPE</span><i>â—†</i><span>PROVENANCE</span><i>â—†</i><span>EARLY ENTRY</span><i>â—†</i><span>EXIT QUALITY</span><i>â—†</i><span>READ ONLY</span><i>â—†</i><span>WALLET REPUTATION</span><i>â—†</i><span>BEHAVIOR TAPE</span><i>â—†</i><span>PROVENANCE</span><i>â—†</i><span>EARLY ENTRY</span><i>â—†</i><span>EXIT QUALITY</span><i>â—†</i><span>READ ONLY</span>
       </div>
-      <form class="scan-box" id="wallet-form">
-        <div class="scan-input-wrap">
-          <span class="prompt">&gt;</span>
-          <input id="wallet-input" autocomplete="off" spellcheck="false" placeholder="0x wallet address" aria-label="Wallet address" />
+    </section>
+
+    <section class="section inspect wrap" id="inspect">
+      <div class="section-no">01 / INSPECT</div>
+      <div class="section-intro reveal">
+        <h2>Read the wallet.<br/>Not the leaderboard.</h2>
+        <div>
+          <p>Paste a Robinhood Chain wallet to open a live read-only transfer tape. Use the synthetic demo to see the full reputation pipeline with score, archetype and badges.</p>
+          <div class="network-pill" id="network-state"><span></span> checking public RPC</div>
+        </div>
+      </div>
+
+      <form class="wallet-form reveal" id="wallet-form">
+        <div class="wallet-input">
+          <span>&gt;</span>
+          <input id="wallet-input" placeholder="0x wallet address" spellcheck="false" autocomplete="off" aria-label="Wallet address" />
           <button type="button" id="demo-button">USE DEMO</button>
         </div>
-        <button class="button primary inspect-button" type="submit">INSPECT WALLET â†—</button>
+        <button class="btn btn-primary submit" type="submit">INSPECT WALLET <span>â†—</span></button>
       </form>
       <div class="scan-result" id="scan-result" hidden></div>
     </section>
 
-    <section class="method shell" id="method">
-      <div class="section-kicker">02 / METHOD</div>
-      <div class="method-title">
-        <h2>A score is useless<br/>without the receipt.</h2>
-        <p>VIPR keeps six dimensions separate. Weak evidence reduces the rank instead of being silently converted into certainty.</p>
-      </div>
-      <div class="dimension-grid">
-        <article><span>01</span><h3>Timing</h3><p>How early a wallet enters relative to observable market age â€” only when market birth is known.</p><b>20%</b></article>
-        <article><span>02</span><h3>Exits</h3><p>Whether gains make it to realized exits instead of disappearing in a roundtrip.</p><b>18%</b></article>
-        <article><span>03</span><h3>Discipline</h3><p>Concentration, churn and repeat behavior across independent positions.</p><b>17%</b></article>
-        <article><span>04</span><h3>Survival</h3><p>What happens when launches fail, liquidity dries up or the thesis breaks.</p><b>13%</b></article>
-        <article><span>05</span><h3>Repeatability</h3><p>One lucky moonshot is not a pattern. Independent complete samples matter.</p><b>17%</b></article>
-        <article><span>06</span><h3>Evidence</h3><p>Provenance, tape completeness and whether the observations can actually support the claim.</p><b>15%</b></article>
+    <section class="section anatomy">
+      <div class="wrap">
+        <div class="section-no">02 / WALLET ANATOMY</div>
+        <div class="anatomy-grid">
+          <div class="sticky-copy reveal">
+            <h2>PnL is a screenshot.<br/><em>Behavior is the tape.</em></h2>
+            <p>A wallet can look brilliant because one bag never sold, awful because old entries are missing, or active because dust got pushed into it. VIPR keeps the parts separate.</p>
+            <a class="text-link" href="/terminal">OPEN THE FULL RECEIPT â†—</a>
+          </div>
+          <div class="anatomy-stack">
+            <article class="metric-card reveal"><span>01</span><div><h3>Timing</h3><p>How early the wallet enters relative to observable market birth. If market birth is unknown, timing loses confidence.</p></div><b>20%</b></article>
+            <article class="metric-card reveal"><span>02</span><div><h3>Exit quality</h3><p>Whether gains become realized exits or disappear in a roundtrip. Open-only history is not treated as complete.</p></div><b>18%</b></article>
+            <article class="metric-card reveal"><span>03</span><div><h3>Discipline</h3><p>Concentration, churn and repeat behavior across independent positions â€” not one lucky moonshot.</p></div><b>17%</b></article>
+            <article class="metric-card reveal"><span>04</span><div><h3>Survival</h3><p>What the wallet does when launches fail, liquidity dries up or the thesis breaks.</p></div><b>13%</b></article>
+            <article class="metric-card reveal"><span>05</span><div><h3>Repeatability</h3><p>Patterns only count when they show up across enough complete, independent samples.</p></div><b>17%</b></article>
+            <article class="metric-card reveal"><span>06</span><div><h3>Evidence</h3><p>Provenance, tape completeness and whether the source data can actually support the claim.</p></div><b>15%</b></article>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="proof shell">
-      <div class="proof-copy">
-        <div class="section-kicker">03"ò$õTäD%“ÂöF—cà¢Æƒ#åF†R6æ¶RvF6†W2ãÆ'"óå–÷RFV6–FRãÂöƒ#à¢Çåd•"†2æò6–væ–ærF‚âF†R&öGV7B—2â–çFVÆÆ–vVæ6RÆ–W#¢6öÆÆV7BV&Æ–2ö'6W'fF–öç2Â&W6W'fR&÷fVææ6RÂW‡Æ–âF†R&V†f–÷"Â7F÷F†W&RãÂ÷à¢Æ‡&VcÒ&‡GG3¢òöv—F‡V"æ6öÒö&öæG“"÷f—"ö&Æö"öÖ–âöFö72õ4dUE’æÖB#å$TBD„R4TdUE’$õTäD%’(isÂöà¢ÂöF—cà¢ÆF—b6Æ73Ò'&ööbÖ6&B#à¢ÆF—cãÇ7ãæWF…÷vWDÆöw3Â÷7ããÆ#å$TCÂö#ãÂöF—cà¢ÆF—cãÇ7ãæWF…ö6ÆÃÂ÷7ããÆ#å$TCÂö#ãÂöF—cà¢ÆF—cãÇ7ãæWF…övWEG&ç67F–öå&V6V—CÂ÷7ããÆ#å$TCÂö#ãÂöF—cà¢ÆF—b6Æ73Ò&&Æö6¶VB#ãÇ7ãç6–våG&ç67F–öãÂ÷7ããÆ#ä%4TåCÂö#ãÂöF—cà¢ÆF—b6Æ73Ò&&Æö6¶VB#ãÇ7ãæWF…÷6VæE&uG&ç67F–öãÂ÷7ããÆ#ä%4TåCÂö#ãÂöF—cà¢ÆF—b6Æ73Ò&&Æö6¶VB#ãÇ7ãå$•dDUô´U“Â÷7ããÆ#ä%4TåCÂö#ãÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà¢ÂöÖ–ãà ¢Æfö÷FW"6Æ73Ò'6†VÆÂ#à¢ÆF—b6Æ73Ò&fö÷FW"Ö'&æB#ãÆ–Ör7&3Ò"ö76WG2÷f—"×6æ¶Rçær"ÇCÒ""óãÇ7ãåd•#Â÷7ããÂöF—cà¢Çä–æFWVæFVçB÷Vâ×6÷W&6RvÆÆWB–çFVÆÆ–vVæ6Rf÷"&ö&–æ†ööB6†–âãÂ÷à¢ÆF—cãÆ‡&VcÒ"÷FW&Ö–æÂ#åFW&Ö–æÃÂöãÆ‡&VcÒ&‡GG3¢òöv—F‡V"æ6öÒö&öæG“"÷f—"#äv—D‡V#ÂöãÂöF—cà¢Âöfö÷FW#à ¢Ç67&—BG—SÒ&ÖöGVÆR"7&3Ò"öæ§2#ãÂ÷67&—Cà£Âö&öG“à£Âö‡FÖÃà
+    <section class="section pipeline wrap" id="method">
+      <div class="section-no">03 / THE PIPELINE</div>
+      <div class="pipeline-head reveal">
+        <h2>From chain noise<br/>to one honest receipt.</h2>
+        <p>The system keeps observations, attribution and interpretation apart. A provider error should never silently become a reputation claim.</p>
+      </div>
+      <div class="pipeline-rail reveal">
+        <div class="pipe-node active"><small>01</small><b>READ</b><span>public RPC</span></div>
+        <div class="pipe-line"><i></i></div>
+        <div class="pipe-node"><small>02</small><b>NORMALIZE</b><span>events + context</span></div>
+        <div class="pipe-line"><i></i></div>
+        <div class="pipe-node"><small>03</small><b>PROVE</b><span>provenance</span></div>
+        <div class="pipe-line"><i></i></div>
+        <div class="pipe-node"><small>04</small><b>MEASURE</b><span>behavior</span></div>
+        <div class="pipe-line"><i></i></div>
+        <div class="pipe-node"><small>05</small><b>GATE</b><span>evidence</span></div>
+        <div class="pipe-line"><i></i></div>
+        <div class="pipe-node"><small>06</small><b>PROFILE</b><span>receipt</span></div>
+      </div>
+      <div class="pipeline-note reveal"><span>RULE</span> Unknown is not zero. Missing evidence lowers confidence instead of manufacturing certainty.</div>
+    </section>
+
+    <section class="section archetypes wrap" id="archetypes">
+      <div class="section-no">04 / ARCHETYPES</div>
+      <div class="section-intro reveal">
+        <h2>Wallets have habits.<br/>VIPR names the pattern.</h2>
+        <p>Archetypes compress recurring observable behavior. They are descriptions, not identity claims, predictions or accusations.</p>
+      </div>
+      <div class="archetype-grid">
+        <article class="arch-card featured reveal"><div class="arch-top"><span>01</span><i>EARLY</i></div><h3>FIRST WAVE</h3><p>Repeatedly gets in early with enough complete samples for timing to mean something.</p><footer>timing â†‘ Â· repeat â†‘</footer></article>
+        <article class="arch-card reveal"><div class="arch-top"><span>02</span><i>FAST</i></div><h3>SNIPER</h3><p>Very early entries, selective tape and short holds. Fast does not automatically mean good.</p><footer>timing â†‘ Â· hold â†“</footer></article>
+        <article class="arch-card reveal"><div class="arch-top"><span>03</span><i>HOLD</i></div><h3>DIAMOND SCALES</h3><p>Holds conviction names longer while still completing exits instead of never selling.</p><footer>winners held longer</footer></article>
+        <article class="arch-card reveal"><div class="arch-top"><span>04</span><i>RECOVER</i></div><h3>SCAVENGER</h3><p>Catches dislocations and exits quickly when the tape shows an opportunity.</p><footer>fast recovery tape</footer></article>
+        <article class="arch-card reveal"><div class="arch-top"><span>05</span><i>RISK</i></div><h3>ROUNDTRIPPER</h3><p>Frequently gives back large unrealized gains before exit. Receipt shows the give-back.</p><footer>peak â†’ exit gap</footer></article>
+        <article class="arch-card reveal"><div class="arch-top"><span>06</span><i>LATE</i></div><h3>LATE VENOM</h3><p>Repeatedly enters after the crowd expands and market age is already high.</p><footer>timing â†“</footer></article>
+      </div>
+    </section>
+
+    <section class="section receipt-section">
+      <div class="wrap receipt-layout">
+        <div class="receipt-copy reveal">
+          <div class="section-no">05 / THE RECEIPT</div>
+          <h2>The score is the summary.<br/>The receipt is the product.</h2>
+          <p>Every VIPR profile keeps the dimensions visible, the evidence level visible and the source limitations visible. There is no one-number magic trick.</p>
+          <ul>
+            <li><span>âœ“</span> score dimensions stay separate</li>
+            <li><span>âœ“</span> evidence can cap the final rank</li>
+            <li><span>âœ“</span> live short-window reads can remain unscored</li>
+            <li><span>âœ“</span> synthetic demos are labelled as synthetic</li>
+          </ul>
+        </div>
+        <div class="receipt-console reveal">
+          <div class="console-head"><span>VIPR / WALLET RECEIPT</span><i>HIGH EVIDENCE</i></div>
+          <div class="console-wallet"><code>0x6900â€¦0420</code><b>FIRST WAVE</b></div>
+          <div class="console-rank"><strong>982</strong><span>/1000</span><small>REPUTATION RANK</small></div>
+          <div class="console-bars">
+            <div><span>TIMING</span><i><b style="width:91%"></b></i><em>91</em></div>
+            <div><span>EXITS</span><i><b style="width:100%"></b></i><em>100</em></div>
+            <div><span>DISCIPLINE</span><i><b style="width:100%"></b></i><em>100</em></div>
+            <div><span>SURVIVAL</span><i><b style="width:100%"></b></i><em>100</em></div>
+            <div><span>REPEAT</span><i><b style="width:100%"></b></i><em>100</em></div>
+            <div><span>EVIDENCE</span><i><b style="width:100%"></b></i><em>100</em></div>
+          </div>
+          <div class="console-badges"><span>EARLY BLOOD</span><span>DIAMOND SCALES</span><span>RUG SURVIVOR</span><span>CLEAN RECEIPTS</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section terminal-showcase wrap">
+      <div class="section-no">06 / LIVE DESK</div>
+      <div class="terminal-copy reveal">
+        <div>
+          <h2>A terminal built for<br/>the trenches.</h2>
+          <p>The browser terminal keeps the behavior tape, profile, evidence ledger and desk pulse visible at the same time.</p>
+        </div>
+        <a class="btn btn-primary" href="/terminal">LAUNCH TERMINAL <span>â†—</span></a>
+      </div>
+      <a class="terminal-window reveal" href="/terminal" aria-label="Open VIPR terminal">
+        <header><div class="traffic"><i></i><i></i><i></i></div><span>vipr@rh:~$ inspect demo</span><b>RH MAINNET Â· READ ONLY</b></header>
+        <div class="term-grid">
+          <div class="term-pane">
+            <small>01 / BEHAVIOR TAPE</small>
+            <div class="tape-row"><em>BUY</em><b>$COIL</b><span>+04m</span><i>verified early entry</i></div>
+            <div class="tape-row"><em>EXIT</em><b>$COIL</b><span>43m</span><i>3.90Ã— realized</i></div>
+            <div class="tape-row active"><em>BUY</em><b>$SCALE</b><span>+17m</span><i>repeatable early entry</i></div>
+            <div class="tape-row"><em>EXIT</em><b>$SCALE</b><span>51m</span><i>4.20Ã— realized</i></div>
+            <div class="tape-row"><em>BUY</em><b>$VENOM</b><span>+28m</span><i>verified early entry</i></div>
+          </div>
+          <div class="term-pane profile-mini">
+            <small>02 / PROFILE</small>
+            <div class="mini-rank"><strong>982</strong><span>/1000</span></div>
+            <h3>FIRST WAVE</h3>
+            <div class="mini-bar"><span>TIMING</span><i><b style="width:91%"></b></i><em>91</em></div>
+            <div class="mini-bar"><span>EXITS</span><i><b style="width:100%"></b></i><em>100</em></div>
+            <div class="mini-bar"><span>EVIDENCE</span><i><b style="width:100%"></b></i><em>100</em></div>
+          </div>
+          <div class="term-pane evidence-mini">
+            <small>03 / EVIDENCE</small>
+            <div><span>PROVENANCE</span><b>VERIFIED</b></div>
+            <div><span>POSITIONS</span><b>10 / 10</b></div>
+            <div><span>MARKET AGE</span><b>PRESENT</b></div>
+            <div><span>LIVE CLAIM</span><b class="muted">NO</b></div>
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <section class="section scenarios wrap">
+      <div class="section-no">07 / TRENCH USE CASES</div>
+      <div class="section-intro reveal">
+        <h2>Built for the moment<br/>before you trust a wallet.</h2>
+        <p>VIPR is not an auto-trader. It is a research surface for checking whether the reputation story matches the on-chain behavior.</p>
+      </div>
+      <div class="scenario-grid">
+        <article class="scenario reveal"><span>BEFORE FOLLOWING</span><h3>â€œIs this wallet actually early?â€</h3><p>Inspect timing across complete samples instead of trusting one screenshot or one recent 20Ã—.</p><footer>timing Â· repeatability Â· evidence</footer></article>
+        <article class="scenario reveal"><span>AFTER A RUN</span><h3>â€œDid they actually exit?â€</h3><p>Separate unrealized peaks from completed exits and see whether the wallet repeatedly roundtrips gains.</p><footer>exits Â· discipline Â· survival</footer></article>
+        <article class="scenario reveal"><span>WHEN DATA IS THIN</span><h3>â€œWhat can we honestly say?â€</h3><p>VIPR can show a live public-RPC tape and still refuse to manufacture a full score when provenance is incomplete.</p><footer>unknown â‰  zero</footer></article>
+      </div>
+    </section>
+
+    <section class="section boundary">
+      <div class="wrap boundary-grid">
+        <div class="boundary-title reveal">
+          <div class="section-no">08 / BOUNDARY</div>
+          <h2>The snake watches.<br/>You decide.</h2>
+          <p>VIPR has no custody path. The core product reads public data, preserves provenance, explains the behavior and stops there.</p>
+        </div>
+        <div class="boundary-table reveal">
+          <div><span>eth_getLogs</span><b>READ</b></div>
+          <div><span>eth_getBalance</span><b>READ</b></div>
+          <div><span>eth_getTransactionReceipt</span><b>READ</b></div>
+          <div class="off"><span>signTransaction</span><b>ABSENT</b></div>
+          <div class="off"><span>eth_sendRawTransaction</span><b>ABSENT</b></div>
+          <div class="off"><span>PRIVATE_KEY</span><b>ABSENT</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section build wrap">
+      <div class="section-no">09 / OPEN BUILD</div>
+      <div class="build-grid">
+        <div class="build-copy reveal">
+          <h2>Open source.<br/>Receipts over promises.</h2>
+          <p>The code, scoring rules, read-only guard and methodology live in public. Follow the repo, inspect the implementation, or follow Bondy for build updates.</p>
+          <div class="social-actions">
+            <a class="btn btn-primary" href="https://github.com/bondy12/vipr" target="_blank" rel="noreferrer">VIPR REPO <span>â†—</span></a>
+            <a class="btn btn-secondary" href="https://github.com/bondy12" target="_blank" rel="noreferrer">GITHUB / BONDY <span>â†—</span></a>
+            <a class="btn btn-secondary" href="https://x.com/bondy_inx" target="_blank" rel="noreferrer">X / @BONDY_INX <span>â†—</span></a>
+          </div>
+        </div>
+        <div class="build-card reveal">
+          <img src="/assets/vipr-snake.png" alt="VIPR snake" />
+          <div>
+            <small>PROJECT STATUS</small><strong>VIPR v0.2</strong>
+            <p>Browser desk Â· terminal Â· deterministic scoring Â· evidence ledger Â· live transfer tape.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="wrap final-inner reveal">
+        <div class="final-mascot">
+          <div class="final-glow"></div>
+          <img src="/assets/vipr-snake.png" alt="" />
+        </div>
+        <small>VIPR / ROBINHOOD CHAIN</small>
+        <h2>Don't copy the screenshot.<br/><em>Read the tracks.</em></h2>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/terminal">OPEN VIPR TERMINAL <span>â†—</span></a>
+          <a class="btn btn-secondary" href="https://github.com/bondy12/vipr" target="_blank" rel="noreferrer">VIEW SOURCE <span>â†—</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <div class="footer-brand"><img src="/assets/vipr-snake.png" alt="" /><b>VIPR</b><span>Every wallet leaves tracks.</span></div>
+    <div class="footer-links">
+      <a href="/terminal">Terminal</a>
+      <a href="https://github.com/bondy12/vipr" target="_blank" rel="noreferrer">Repo</a>
+      <a href="https://github.com/bondy12" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://x.com/bondy_inx" target="_blank" rel="noreferrer">X</a>
+    </div>
+    <p>Independent open-source wallet intelligence for Robinhood Chain. Not affiliated with Robinhood Markets, Inc.</p>
+  </footer>
+
+  <script src="/site.js"></script>
+</body>
+</html>
