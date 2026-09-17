@@ -309,3 +309,14 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
 .mascot-stage:hover .snake-readout{opacity:1}
 .snake-floor-shadow{opacity:.72;transform:scaleX(.96)}
 .snake-rig{transform:translateZ(0);will-change:transform}
+
+/* v0.2.4 — reference-style autonomous creature pass */
+.mascot-stage{min-height:620px}
+.snake-rig{width:min(520px,76vw)}
+.snake-ambient{opacity:.20}
+.snake-track{opacity:.34}
+.snake-readout{opacity:.48}
+.mascot-stage:hover .snake-readout{opacity:.76}
+.snake-floor-shadow{opacity:.62;filter:blur(10px)}
+@media(max-width:980px){.snake-rig{width:min(470px,74vw)}}
+@media(max-width:640px){.snake-rig{width:min(365px,88vw)}}
