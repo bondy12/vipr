@@ -1,0 +1,17 @@
+{
+  "synthetic": true,
+  "label": "synthetic-first-wave",
+  "address": "0x6900000000000000000000000000000000000420",
+  "positions": [
+    {"token":"$COIL","provenance":"verified","capitalSharePct":18,"entry":{"marketAgeMinutes":4},"maxMultiple":4.8,"exit":{"multiple":3.9,"closedFraction":1,"holdMinutes":43},"market":{"failed":false}},
+    {"token":"$BITE","provenance":"verified","capitalSharePct":12,"entry":{"marketAgeMinutes":11},"maxMultiple":2.4,"exit":{"multiple":2.1,"closedFraction":1,"holdMinutes":27},"market":{"failed":false}},
+    {"token":"$SHED","provenance":"verified","capitalSharePct":14,"entry":{"marketAgeMinutes":22},"maxMultiple":1.7,"exit":{"multiple":1.45,"closedFraction":1,"holdMinutes":19},"market":{"failed":false}},
+    {"token":"$MOLT","provenance":"verified","capitalSharePct":9,"entry":{"marketAgeMinutes":8},"maxMultiple":1.2,"exit":{"multiple":0.91,"closedFraction":1,"holdMinutes":8},"market":{"failed":true}},
+    {"token":"$FANG","provenance":"verified","capitalSharePct":21,"entry":{"marketAgeMinutes":35},"maxMultiple":3.1,"exit":{"multiple":2.4,"closedFraction":1,"holdMinutes":36},"market":{"failed":false}},
+    {"token":"$HISS","provenance":"verified","capitalSharePct":16,"entry":{"marketAgeMinutes":14},"maxMultiple":1.3,"exit":{"multiple":0.82,"closedFraction":1,"holdMinutes":7},"market":{"failed":true}},
+    {"token":"$SCALE","provenance":"verified","capitalSharePct":24,"entry":{"marketAgeMinutes":17},"maxMultiple":5.5,"exit":{"multiple":4.2,"closedFraction":1,"holdMinutes":51},"market":{"failed":false}},
+    {"token":"$VENOM","provenance":"verified","capitalSharePct":13,"entry":{"marketAgeMinutes":28},"maxMultiple":2.2,"exit":{"multiple":1.9,"closedFraction":1,"holdMinutes":25},"market":{"failed":false}},
+    {"token":"$DEN","provenance":"verified","capitalSharePct":10,"entry":{"marketAgeMinutes":6},"maxMultiple":1.1,"exit":{"multiple":0.77,"closedFraction":1,"holdMinutes":6},"market":{"failed":true}},
+    {"token":"$TRACK","provenance":"verified","capitalSharePct":19,"entry":{"marketAgeMinutes":19},"maxMultiple":2.9,"exit":{"multiple":2.2,"closedFraction":1,"holdMinutes":31},"market":{"failed":false}}
+  ]
+}

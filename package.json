@@ -1,0 +1,16 @@
+{
+  "name": "vipr-rh",
+  "version": "0.1.0",
+  "description": "Read-only wallet reputation receipts for Robinhood Chain.",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=22" },
+  "bin": { "vipr": "./bin/vipr.mjs" },
+  "scripts": {
+    "demo": "node ./bin/vipr.mjs demo",
+    "test": "node --test",
+    "verify:readonly": "node ./scripts/verify-readonly.mjs",
+    "check": "npm run verify:readonly && npm test && node ./bin/vipr.mjs doctor"
+  },
+  "license": "MIT"
+}

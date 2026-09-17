@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="590" viewBox="0 0 1100 590" role="img" aria-label="VIPR synthetic terminal receipt">
+  <rect width="1100" height="590" rx="24" fill="#050906"/>
+  <rect x="28" y="28" width="1044" height="534" rx="18" fill="#071008" stroke="#244628"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <text x="62" y="78" fill="#b7ff19" font-size="28" font-weight="800">VIPR / WALLET RECEIPT</text>
+    <text x="62" y="112" fill="#7e927d" font-size="17">SYNTHETIC DEMO · 0x6900…0420</text>
+    <text x="62" y="164" fill="#f0f6ef" font-size="22">RANK</text><text x="330" y="164" fill="#b7ff19" font-size="22" font-weight="700">982 / 1000</text>
+    <text x="62" y="198" fill="#f0f6ef" font-size="22">ARCHETYPE</text><text x="330" y="198" fill="#f0f6ef" font-size="22">FIRST WAVE</text>
+    <text x="62" y="232" fill="#f0f6ef" font-size="22">EVIDENCE</text><text x="330" y="232" fill="#f0f6ef" font-size="22">HIGH</text>
+    <text x="62" y="290" fill="#7e927d" font-size="16">TIMING</text><text x="330" y="290" fill="#f0f6ef" font-size="20">91</text>
+    <text x="62" y="322" fill="#7e927d" font-size="16">EXITS</text><text x="330" y="322" fill="#f0f6ef" font-size="20">100</text>
+    <text x="62" y="354" fill="#7e927d" font-size="16">DISCIPLINE</text><text x="330" y="354" fill="#f0f6ef" font-size="20">100</text>
+    <text x="570" y="290" fill="#7e927d" font-size="16">SURVIVAL</text><text x="840" y="290" fill="#f0f6ef" font-size="20">100</text>
+    <text x="570" y="322" fill="#7e927d" font-size="16">REPEAT</text><text x="840" y="322" fill="#f0f6ef" font-size="20">100</text>
+    <text x="570" y="354" fill="#7e927d" font-size="16">EVIDENCE</text><text x="840" y="354" fill="#f0f6ef" font-size="20">100</text>
+    <line x1="62" y1="402" x2="1038" y2="402" stroke="#244628"/>
+    <text x="62" y="448" fill="#7e927d" font-size="16">BADGES</text>
+    <text x="62" y="486" fill="#b7ff19" font-size="19">EARLY BLOOD · DIAMOND SCALES · RUG SURVIVOR · CLEAN RECEIPTS</text>
+    <text x="62" y="530" fill="#536752" font-size="15">same deterministic values as npm run demo · not a live-wallet claim</text>
+  </g>
+</svg>
