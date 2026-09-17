@@ -199,3 +199,104 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
   .snake-track:after{animation:none}
   .snake-creature,.snake-part-head,.snake-part-body{transform:none!important}
 }
+
+
+/* v0.2.2 — exact mascot + canvas slither rig */
+.mascot-stage{
+  overflow:visible;
+  height:620px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  isolation:isolate;
+}
+.snake-creature,.snake-part{display:none!important}
+.snake-rig{
+  position:relative;
+  z-index:4;
+  width:min(500px,72vw);
+  aspect-ratio:1/1;
+  display:grid;
+  place-items:center;
+}
+.snake-canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 26px 28px rgba(0,0,0,.42));
+  opacity:0;
+  transition:opacity .22s ease;
+}
+.snake-source{display:none!important}
+.snake-fallback{
+  width:78%;
+  height:78%;
+  object-fit:contain;
+  image-rendering:pixelated;
+  mix-blend-mode:screen;
+  filter:drop-shadow(0 26px 28px rgba(0,0,0,.42));
+  transition:opacity .2s ease;
+}
+.mascot-stage.snake-ready .snake-canvas{opacity:1}
+.mascot-stage.snake-ready .snake-fallback{opacity:0}
+.snake-floor-shadow{
+  position:absolute;
+  left:23%;right:23%;bottom:14%;
+  height:7%;
+  z-index:-1;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(0,0,0,.46),transparent 72%);
+  filter:blur(8px);
+}
+.snake-ambient{
+  position:absolute;
+  inset:11% 3% 8%;
+  pointer-events:none;
+  opacity:.42;
+}
+.snake-ambient:before{
+  content:"";
+  position:absolute;
+  left:50%;top:49%;
+  width:410px;height:310px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(183,255,25,.075),rgba(70,126,34,.02) 52%,transparent 73%);
+  filter:blur(16px);
+}
+.snake-track{
+  position:absolute;
+  left:7%;right:7%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(183,255,25,.15) 26%,rgba(183,255,25,.05) 74%,transparent);
+  overflow:hidden;
+}
+.track-one{top:70%;transform:rotate(-3deg)}
+.track-two{top:75%;transform:rotate(2deg);opacity:.32}
+.snake-track:after{
+  content:"";
+  position:absolute;top:-2px;left:-12%;
+  width:56px;height:5px;
+  background:linear-gradient(90deg,transparent,var(--lime),transparent);
+  animation:snakeTrackPulse 6.2s linear infinite;
+}
+.track-two:after{animation-delay:2.4s;animation-duration:8s}
+.brand img,.footer-brand img,.build-card img,.final-mascot img{
+  mix-blend-mode:screen;
+}
+@media(max-width:980px){
+  .mascot-stage{height:540px}
+  .snake-rig{width:min(440px,70vw)}
+}
+@media(max-width:640px){
+  .mascot-stage{height:430px}
+  .snake-rig{width:min(350px,84vw)}
+  .snake-readout{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .snake-canvas{display:none!important}
+  .snake-fallback{opacity:1!important}
+}

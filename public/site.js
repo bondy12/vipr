@@ -7,47 +7,125 @@ const short=(a)=>a?`${a.slice(0,6)}…${a.slice(-4)}`:'—';
 const glow=$('.cursor-glow');
 window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const stage=$('#mascot-stage');
-const creature=$('#snake-creature');
-if(stage&&creature&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-  let targetPX=0,targetPY=0,px=0,py=0,last=performance.now();
-  stage.addEventListener('pointermove',e=>{
-    const r=stage.getBoundingClientRect();
-    targetPX=((e.clientX-r.left)/r.width-.5)*22;
-    targetPY=((e.clientY-r.top)/r.height-.5)*14;
-  });
-  stage.addEventListener('pointerleave',()=>{targetPX=0;targetPY=0});
-  const animateSnake=(now)=>{
-    const dt=Math.min(32,now-last); last=now;
-    const spring=Math.min(1,dt*.0048);
-    px+=(targetPX-px)*spring; py+=(targetPY-py)*spring;
+const snakeCanvas=$('#snake-canvas');
+const snakeSource=$('#snake-source');
 
-    const ampX=Math.min(72,stage.clientWidth*.115);
-    const crawlX=Math.sin(now*.00043)*ampX + Math.sin(now*.00017+1.25)*14 + px;
-    const crawlY=Math.sin(now*.00068+.85)*9 + Math.cos(now*.00031)*4 + py;
-    const crawlR=Math.sin(now*.00039-.5)*1.05;
+function buildForegroundSprite(img){
+  const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+  const work=document.createElement('canvas');work.width=w;work.height=h;
+  const wctx=work.getContext('2d',{willReadFrequently:true});
+  wctx.imageSmoothingEnabled=false;
+  wctx.drawImage(img,0,0,w,h);
+  const image=wctx.getImageData(0,0,w,h),d=image.data;
 
-    // Head leads the motion; lower coil follows more slowly.
-    const headR=Math.sin(now*.00105)*1.85 + Math.sin(now*.00037+1.7)*.75;
-    const headX=Math.sin(now*.00092+.45)*3.2;
-    const headY=Math.cos(now*.00083)*2.1;
-    const bodyR=Math.sin(now*.00053+2.2)*.6;
-    const bodySX=1+Math.sin(now*.00072+1.4)*.006;
-    const bodySY=1-Math.sin(now*.00072+1.4)*.004;
+  // Estimate the baked background from the corners.
+  const pts=[[0,0],[w-1,0],[0,h-1],[w-1,h-1],[Math.floor(w/2),0],[Math.floor(w/2),h-1]];
+  let br=0,bg=0,bb=0,n=0;
+  for(const [x,y] of pts){const i=(y*w+x)*4;br+=d[i];bg+=d[i+1];bb+=d[i+2];n++}
+  br/=n;bg/=n;bb/=n;
 
-    creature.style.setProperty('--crawl-x',crawlX.toFixed(2)+'px');
-    creature.style.setProperty('--crawl-y',crawlY.toFixed(2)+'px');
-    creature.style.setProperty('--crawl-r',crawlR.toFixed(3)+'deg');
-    creature.style.setProperty('--head-r',headR.toFixed(3)+'deg');
-    creature.style.setProperty('--head-x',headX.toFixed(2)+'px');
-    creature.style.setProperty('--head-y',headY.toFixed(2)+'px');
-    creature.style.setProperty('--body-r',bodyR.toFixed(3)+'deg');
-    creature.style.setProperty('--body-sx',bodySX.toFixed(4));
-    creature.style.setProperty('--body-sy',bodySY.toFixed(4));
-    requestAnimationFrame(animateSnake);
-  };
-  requestAnimationFrame(animateSnake);
+  const seen=new Uint8Array(w*h),queue=new Int32Array(w*h);
+  let qh=0,qt=0;
+  const push=(x,y)=>{if(x<0||y<0||x>=w||y>=h)return;const p=y*w+x;if(seen[p])return;seen[p]=1;queue[qt++]=p};
+  for(let x=0;x<w;x++){push(x,0);push(x,h-1)}
+  for(let y=0;y<h;y++){push(0,y);push(w-1,y)}
+
+  const threshold=58;
+  while(qh<qt){
+    const p=queue[qh++],x=p%w,y=(p/w)|0,i=p*4;
+    const dr=d[i]-br,dg=d[i+1]-bg,db=d[i+2]-bb;
+    const dist=Math.sqrt(dr*dr+dg*dg+db*db);
+    const lum=.2126*d[i]+.7152*d[i+1]+.0722*d[i+2];
+    if(dist>threshold || lum>92) continue;
+    d[i+3]=0;
+    push(x+1,y);push(x-1,y);push(x,y+1);push(x,y-1);
+  }
+
+  // Feather only the outer keyed edge. Internal dark outlines remain untouched.
+  const alpha=new Uint8ClampedArray(w*h);
+  for(let p=0;p<w*h;p++)alpha[p]=d[p*4+3];
+  for(let y=1;y<h-1;y++)for(let x=1;x<w-1;x++){
+    const p=y*w+x;if(alpha[p]===0)continue;
+    let empty=0;
+    for(let yy=-1;yy<=1;yy++)for(let xx=-1;xx<=1;xx++)if(alpha[(y+yy)*w+x+xx]===0)empty++;
+    if(empty>=4)d[p*4+3]=Math.min(d[p*4+3],205);
+  }
+  wctx.putImageData(image,0,0);
+  return work;
 }
 
+function initSnakeRig(){
+  if(!stage||!snakeCanvas||!snakeSource)return;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const ctx=snakeCanvas.getContext('2d');
+  if(!ctx)return;
+  ctx.imageSmoothingEnabled=false;
+
+  const startRig=()=>{
+    let sprite;
+    try{sprite=buildForegroundSprite(snakeSource)}catch(err){return}
+    const sw=sprite.width,sh=sprite.height;
+    stage.classList.add('snake-ready');
+
+    let last=performance.now(),phase=0,pointerX=0,pointerY=0,targetX=0,targetY=0;
+    stage.addEventListener('pointermove',e=>{
+      const r=stage.getBoundingClientRect();
+      targetX=((e.clientX-r.left)/r.width-.5)*9;
+      targetY=((e.clientY-r.top)/r.height-.5)*5;
+    });
+    stage.addEventListener('pointerleave',()=>{targetX=0;targetY=0});
+
+    const draw=(now)=>{
+      const dt=Math.min(34,now-last);last=now;
+      pointerX+=(targetX-pointerX)*Math.min(1,dt*.005);
+      pointerY+=(targetY-pointerY)*Math.min(1,dt*.005);
+
+      const cw=snakeCanvas.width,ch=snakeCanvas.height;
+      ctx.clearRect(0,0,cw,ch);
+
+      const t=now/1000;
+      const travel=Math.sin(t*.46);
+      const velocity=Math.cos(t*.46);
+      const maxTravel=cw*.105;
+      const crawlX=travel*maxTravel + Math.sin(t*.17+1.1)*8 + pointerX;
+      const crawlY=Math.sin(t*.72+.6)*3.5 + pointerY;
+      const rot=Math.sin(t*.38-.4)*.012;
+
+      // The travelling body wave advances slightly faster when the mascot is moving.
+      phase += dt*(.0025 + Math.abs(velocity)*.0018);
+
+      const scale=Math.min((cw*.62)/sw,(ch*.70)/sh);
+      const dw=sw*scale,dh=sh*scale;
+      const baseX=(cw-dw)/2+crawlX,baseY=(ch-dh)/2+crawlY;
+
+      ctx.save();
+      ctx.translate(cw/2+crawlX,ch/2+crawlY);
+      ctx.rotate(rot);
+      ctx.translate(-(cw/2+crawlX),-(ch/2+crawlY));
+
+      // Fine horizontal slices create an S-wave through the exact original artwork.
+      const slice=3;
+      for(let sy=0;sy<sh;sy+=slice){
+        const nh=Math.min(slice,sh-sy);
+        const ny=sy/sh;
+        const envelope=.34 + .66*Math.sin(Math.PI*ny);
+        const headLead=ny<.42 ? (1-ny/.42)*2.4 : 0;
+        const wave=(Math.sin(phase*3.3-ny*6.9)*5.8 + Math.sin(phase*1.45-ny*3.2)*2.3)*envelope;
+        const probe=headLead*Math.sin(t*1.15)*1.35;
+        const dx=wave+probe;
+        const dy=Math.sin(phase*2.2-ny*4.4)*.65*envelope;
+        ctx.drawImage(sprite,0,sy,sw,nh,baseX+dx,baseY+sy*scale+dy,dw,nh*scale+0.65);
+      }
+      ctx.restore();
+      requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  };
+
+  if(snakeSource.complete&&snakeSource.naturalWidth)startRig();
+  else snakeSource.addEventListener('load',startRig,{once:true});
+}
+initSnakeRig();
 const io=new IntersectionObserver(entries=>entries.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.14});
 $$('.reveal').forEach(el=>io.observe(el));
 

@@ -16,7 +16,7 @@
 
   <header class="nav wrap">
     <a class="brand" href="/" aria-label="VIPR home">
-      <img src="/assets/vipr-snake-transparent.webp" alt="" />
+      <img src="/assets/vipr-snake.png" alt="" />
       <span>VIPR</span>
       <small>WALLET INTELLIGENCE</small>
     </a>
@@ -51,10 +51,11 @@
           <span class="snake-track track-one"></span>
           <span class="snake-track track-two"></span>
         </div>
-        <div class="snake-creature" id="snake-creature">
-          <div class="snake-shadow" aria-hidden="true"></div>
-          <img class="snake-part snake-part-head" src="/assets/vipr-snake-transparent.webp" alt="VIPR pixel snake mascot" />
-          <img class="snake-part snake-part-body" src="/assets/vipr-snake-transparent.webp" alt="" aria-hidden="true" />
+        <div class="snake-rig" id="snake-rig">
+          <canvas id="snake-canvas" class="snake-canvas" width="560" height="560" aria-label="Animated VIPR snake mascot"></canvas>
+          <img id="snake-source" class="snake-source" src="/assets/vipr-snake.png" alt="" crossorigin="anonymous" />
+          <img class="snake-fallback" src="/assets/vipr-snake.png" alt="VIPR pixel snake mascot" />
+          <div class="snake-floor-shadow" aria-hidden="true"></div>
         </div>
         <div class="snake-readout readout-left"><small>TRACKING</small><b>WALLET TAPE</b></div>
         <div class="snake-readout readout-right"><small>MODE</small><b>READ ONLY</b></div>
@@ -261,7 +262,7 @@
           </div>
         </div>
         <div class="build-card reveal">
-          <img src="/assets/vipr-snake-transparent.webp" alt="VIPR snake" />
+          <img src="/assets/vipr-snake.png" alt="VIPR snake" />
           <div>
             <small>PROJECT STATUS</small><strong>VIPR v0.2</strong>
             <p>Browser desk · terminal · deterministic scoring · evidence ledger · live transfer tape.</p>
@@ -274,7 +275,7 @@
       <div class="wrap final-inner reveal">
         <div class="final-mascot">
           <div class="final-glow"></div>
-          <img src="/assets/vipr-snake-transparent.webp" alt="" />
+          <img src="/assets/vipr-snake.png" alt="" />
         </div>
         <small>VIPR / ROBINHOOD CHAIN</small>
         <h2>Don't copy the screenshot.<br/><em>Read the tracks.</em></h2>
@@ -287,7 +288,7 @@
   </main>
 
   <footer class="footer wrap">
-    <div class="footer-brand"><img src="/assets/vipr-snake-transparent.webp" alt="" /><b>VIPR</b><span>Every wallet leaves tracks.</span></div>
+    <div class="footer-brand"><img src="/assets/vipr-snake.png" alt="" /><b>VIPR</b><span>Every wallet leaves tracks.</span></div>
     <div class="footer-links">
       <a href="/terminal">Terminal</a>
       <a href="https://github.com/bondy12/vipr" target="_blank" rel="noreferrer">Repo</a>
