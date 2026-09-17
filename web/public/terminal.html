@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#030604" />
+  <title>VIPR Terminal</title>
+  <link rel="icon" href="/assets/vipr-snake.png" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="terminal-page">
+  <div class="terminal-shell">
+    <header class="terminal-header">
+      <a class="terminal-logo" href="/"><img src="/assets/vipr-snake.png" alt=""/><b>VIPR</b><span>/ REPUTATION DESK</span></a>
+      <div class="terminal-status"><span id="term-rpc-dot"></span><b>RH MAINNET</b><small id="term-block">BLOCK —</small><small>READ ONLY</small></div>
+      <div class="terminal-clock" id="terminal-clock">--:--:-- UTC</div>
+    </header>
+
+    <div class="terminal-commandbar">
+      <span class="term-prompt">vipr@rh:~$</span>
+      <input id="terminal-input" value="demo" spellcheck="false" autocomplete="off" aria-label="Wallet or demo" />
+      <button id="terminal-run">RUN</button>
+      <span class="terminal-hint">try: <button data-fill="demo">demo</button> or paste 0x wallet</span>
+    </div>
+
+    <main class="terminal-grid">
+      <section class="term-panel tape-panel">
+        <header><span>01</span><b>BEHAVIOR TAPE</b><small id="tape-mode">SYNTHETIC</small></header>
+        <div class="tape-stream" id="tape-stream"></div>
+        <footer><span>↑↓ SELECT</span><span>ENTER INSPECT</span><span>R REFRESH</span></footer>
+      </section>
+
+      <section class="term-panel profile-panel">
+        <header><span>02</span><b>WALLET PROFILE</b><small id="profile-evidence">EVIDENCE —</small></header>
+        <div class="profile-content" id="profile-content">
+          <div class="term-loading">loading receipt<span>...</span></div>
+        </div>
+      </section>
+
+      <section class="term-panel evidence-panel">
+        <header><span>03</span><b>EVIDENCE LEDGER</b><small>PROVENANCE</small></header>
+        <div class="evidence-content" id="evidence-content"></div>
+      </section>
+
+      <section class="term-panel activity-panel">
+        <header><span>04</span><b>DESK PULSE</b><small id="pulse-label">DEMO</small></header>
+        <div class="pulse-content">
+          <div class="snake-stage"><img src="/assets/vipr-snake.png" alt="VIPR snake"/><div class="snake-glow"></div></div>
+          <div class="pulse-lines" id="pulse-lines"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="terminal-footer"><span>VIPR DOES NOT SIGN OR EXECUTE</span><span>UNKNOWN ≠ ZERO</span><span><a href="https://github.com/bondy12/vipr">SOURCE ↗</a></span></footer>
+  </div>
+  <script type="module" src="/terminal.js"></script>
+</body>
+</html>

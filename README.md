@@ -53,9 +53,9 @@ The snake is the meme. **The receipts are the product.**
 | Behavior metrics | **WORKING** | timing, hold, round-trip, concentration, realized sample metrics |
 | Reputation profile | **WORKING** | score breakdown + archetype + badges |
 | Text / JSON receipts | **WORKING** | same profile in human and machine-readable form |
-| Live Robinhood reader | **SCAFFOLDED** | provider boundary and documented requirements |
-| Browser desk | **PLANNED** | profile cards, leaderboards and share cards |
-| Telegram bot | **PLANNED** | wallet lookup and movement alerts |
+| Live Robinhood reader | **WORKING / LIMITED** | public-RPC health + recent ERC-20 transfer tape; reputation score withheld until attribution is complete |
+| Browser desk | **WORKING** | responsive landing page + full-screen reputation terminal |
+| CLI terminal | **WORKING** | interactive full-screen local reputation desk |
 
 No wallet key, signer or transaction path exists in this foundation.
 
@@ -76,6 +76,8 @@ npm test
 Or run the CLI directly:
 
 ```bash
+node bin/vipr.mjs web       # browser desk → http://127.0.0.1:4317
+node bin/vipr.mjs terminal  # interactive CLI desk
 node bin/vipr.mjs demo
 node bin/vipr.mjs profile demo
 node bin/vipr.mjs profile demo --json
@@ -88,34 +90,28 @@ Example demo output:
 ```text
 VIPR / WALLET RECEIPT
 0x6900…0420
-SYNTHETIC DEMO
 
-RANK          982 / 1000
-ARCHETYPE     FIRST WAVE
-EVIDENCE      high
+RANK        982 / 1000
+ARCHETYPE   FIRST WAVE
+EVIDENCE    high
 
-TIMING        91
-EXITS         100
-DISCIPLINE    100
-SURVIVAL      100
-REPEAT        100
-EVIDENCE      100
+TIMING       91
+EXITS        100
+DISCIPLINE   100
+SURVIVAL     100
+REPEAT      100
+EVIDENCE    100
 
-MEDIAN HOLD   26m
-ROUNDTRIPS    0%
-EARLY HITS    90%
-MAX CONC.     24%
-
-BADGES        EARLY BLOOD · DIAMOND SCALES · RUG SURVIVOR · CLEAN RECEIPTS
+BADGES      EARLY BLOOD · DIAMOND SCALES · RUG SURVIVOR · CLEAN RECEIPTS
 ```
 
-The bundled demo is synthetic and visibly labelled. It exists so the scoring pipeline can be inspected without pretending production wallet coverage already exists.
+The bundled demo is synthetic and visibly labelled. It is there so the scoring pipeline can be inspected without pretending we already have production wallet coverage.
 
 <p align="center">
   <img src="assets/terminal-receipt.svg" width="900" alt="VIPR synthetic wallet receipt rendered as a terminal card" />
 </p>
 
-<sub>The receipt above is documentation artwork for the same deterministic values printed by `npm run demo`, not a live-wallet claim.</sub>
+<sub>The receipt above is generated from the bundled **synthetic demo fixture**. It is documentation artwork for the same deterministic values printed by `npm run demo`, not a live-wallet claim.</sub>
 
 ---
 
@@ -123,41 +119,43 @@ The bundled demo is synthetic and visibly labelled. It exists so the scoring pip
 
 VIPR deliberately separates **behavior**, **evidence quality**, and **presentation**.
 
+A future live profile can look like this:
+
 ```text
 0x12F4…9A71
-────────────────────────────────────────
-VIPR RANK         812 / 1000
-ARCHETYPE         FIRST WAVE
-EVIDENCE          HIGH
+───────────────────────────────────────
+VIPR RANK        812 / 1000
+ARCHETYPE        FIRST WAVE
+EVIDENCE         HIGH
 
-EARLY ENTRY       88
-EXIT QUALITY      74
-DISCIPLINE        69
-SURVIVAL          81
-REPEATABILITY     76
+EARLY ENTRY      88
+EXIT QUALITY     74
+DISCIPLINE       69
+SURVIVAL         81
+REPEATABILITY    76
 
-MEDIAN HOLD       17m 42s
-ROUNDTRIP RATE    18%
-EARLY HITS        7 / 11
-FULL EXITS        23
+MEDIAN HOLD      17m 42s
+ROUNDTRIP RATE   18%
+EARLY HITS       7 / 11
+FULL EXITS       23
 MAX CONCENTRATION 31%
 
 BADGES
-EARLY BLOOD       repeated early complete samples
-DIAMOND SCALES    winners held longer than losers without never-selling bias
-RUG SURVIVOR      recovered capital across multiple failed launches
+EARLY BLOOD      entered before the crowd in repeated complete samples
+DIAMOND SCALES   holds winners longer than losers without never-selling bias
+RUG SURVIVOR     recovered capital across multiple failed launches
 ```
 
 ### Archetypes
 
-Archetypes are compressed descriptions, not claims about identity or intent.
+VIPR uses archetypes as compressed descriptions, not as claims about identity or intent.
 
 | Archetype | Behavior pattern |
 | --- | --- |
-| `FIRST WAVE` | repeatedly arrives early with enough evidence for timing to mean something |
+| `FIRST WAVE` | repeatedly arrives early with enough liquidity to make the timing meaningful |
 | `SNIPER` | very early, short hold, selective entry pattern |
 | `DIAMOND SCALES` | holds conviction names longer while still completing exits |
-| `SCAVENGER` | catches dislocations and exits quickly |
+| `SCAVENGER` | enters after sharp dislocations and exits quickly |
 | `ROUNDTRIPPER` | frequently gives back large unrealized gains before exit |
 | `LATE VENOM` | repeatedly enters after crowd expansion |
 | `UNKNOWN` | evidence is too thin or incomplete to classify honestly |
@@ -170,16 +168,16 @@ Full definitions live in [`docs/SCORING.md`](docs/SCORING.md).
 
 VIPR avoids one magic number doing all the work.
 
-| Dimension | What it measures | What can invalidate it |
+| Dimension | What it tries to measure | What can invalidate it |
 | --- | --- | --- |
-| Timing | entry timing relative to observable market age | missing pool birth / incomplete tape |
-| Exit quality | realized exits and large give-back | only open positions available |
-| Discipline | concentration, churn and round-trip behavior | transfers mistaken for trades |
-| Survival | behavior across failed or illiquid names | no reliable failure state |
-| Repeatability | whether a pattern appears across independent positions | sample too small |
+| Timing | how early a wallet enters relative to a market's observable life | missing pool birth / incomplete tape |
+| Exit quality | whether realized exits preserve gains and avoid catastrophic give-back | only open positions available |
+| Discipline | concentration, repeat buys, churn and round-trip behavior | transfers mistaken for trades |
+| Survival | behavior across failed or illiquid names | no reliable failure / liquidity state |
+| Repeatability | whether a pattern appears across enough independent positions | sample too small |
 | Evidence | completeness and provenance of the rows above | uncertain source attribution |
 
-If a required fact is unknown, VIPR lowers evidence confidence — **it does not fill the blank with zero.**
+If a required fact is unknown, the intended behavior is to lower evidence confidence — **not fill the blank with zero.**
 
 ---
 
@@ -198,7 +196,7 @@ flowchart LR
     I --> J[terminal / JSON / future web desk]
 ```
 
-The important boundary is between **observations** and **interpretation**. Provider modules collect and normalize. Scoring modules never reach into RPCs or APIs directly.
+The important boundary is between **observations** and **interpretation**. Provider modules collect and normalize. The scoring modules never reach into RPCs or APIs directly.
 
 More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
@@ -211,7 +209,6 @@ More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 assets/
   vipr-snake.png             pixel mascot
   banner.svg                 README banner
-  terminal-receipt.svg       synthetic receipt artwork
 bin/vipr.mjs                 CLI entry point
 data/demo-wallet.json        labelled synthetic fixture
 docs/
@@ -222,7 +219,7 @@ docs/
   PROVENANCE.md              source attribution and evidence rules
   ROADMAP.md                 product sequence
   SAFETY.md                  read-only boundary
-  SCORING.md                 dimensions and evidence gates
+  SCORING.md                 dimensions, badges and evidence gates
 scripts/verify-readonly.mjs  guard against signing / write primitives
 src/
   core/                      scoring, metrics, archetypes
@@ -230,8 +227,11 @@ src/
   providers/                 live-source boundary
   reports/                   text and JSON receipts
   cli.mjs                    command routing
-test/                        deterministic Node tests
+  types.mjs                  shared shapes
+ test/                       deterministic Node tests
 ```
+
+The structure is intentionally boring: sources read, core reasons, reports render.
 
 ---
 
@@ -239,6 +239,8 @@ test/                        deterministic Node tests
 
 | Command | Purpose |
 | --- | --- |
+| `vipr web` | start the browser desk on port 4317 |
+| `vipr terminal` | open the interactive local terminal |
 | `vipr demo` | print the deterministic synthetic walkthrough |
 | `vipr profile demo` | score the bundled example wallet |
 | `vipr profile demo --json` | emit the same receipt as JSON |
@@ -251,11 +253,20 @@ See [`docs/COMMANDS.md`](docs/COMMANDS.md).
 
 ## Read-only by construction
 
-VIPR's public intelligence layer should never need custody. The repository intentionally contains no private-key import, seed handling, signing, token approvals, buy/sell execution or transaction submission.
+VIPR's public intelligence layer should never need custody.
 
-`npm run verify:readonly` scans `src/` for the write/signing primitives this repository has explicitly excluded.
+The repository intentionally contains no:
 
-Read [`docs/SAFETY.md`](docs/SAFETY.md) and [`docs/PROVENANCE.md`](docs/PROVENANCE.md) before adding a live provider.
+- private-key or mnemonic import
+- `eth_sendRawTransaction`
+- transaction signing
+- token approvals
+- buy / sell execution
+- “connect wallet to unlock scoring” requirement
+
+`npm run verify:readonly` scans the source tree for the primitives this repo has decided not to contain.
+
+Read [`docs/SAFETY.md`](docs/SAFETY.md) and [`docs/PROVENANCE.md`](docs/PROVENANCE.md) before adding any live provider.
 
 ---
 
@@ -266,17 +277,19 @@ npm test
 npm run check
 ```
 
-Tests are deterministic and offline. They cover score bounds, evidence downgrades, archetype selection and badge assignment. CI runs on Node 22 and 24.
+The tests are deterministic and offline. They cover score bounds, evidence downgrades, archetype selection, badge assignment and demo output. CI runs on Node 22 and 24.
 
 ---
 
 ## Product direction
 
+The foundation is deliberately smaller than the final product.
+
 1. **Receipt** — one wallet, transparent behavior breakdown.
 2. **Desk** — search, compare, watchlist, recent changes.
 3. **Social identity** — shareable profile cards and earned badges.
-4. **Cohorts** — what high-evidence early wallets are doing now without flattening them into one PnL leaderboard.
-5. **Protocol API** — reputation dimensions with provenance for other Robinhood Chain products.
+4. **Cohorts** — “what are high-evidence early wallets doing now?” without flattening them into one PnL leaderboard.
+5. **Protocol API** — let launchpads and terminals query reputation dimensions with provenance.
 
 See [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
@@ -286,7 +299,7 @@ See [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 **VIPR — Every wallet leaves tracks.**
 
-The mascot is a pixel snake: observant, patient, slightly mischievous. The visual system stays dark and quiet so evidence gets the bright color.
+The mascot is a pixel snake: observant, patient, slightly mischievous, never a corporate shield or generic “AI brain.” The visual system stays dark and quiet so evidence gets the bright color.
 
 Brand notes: [`docs/BRAND.md`](docs/BRAND.md).
 
@@ -294,9 +307,9 @@ Brand notes: [`docs/BRAND.md`](docs/BRAND.md).
 
 ## Independence
 
-VIPR is an independent open-source project built around public on-chain data. It is not affiliated with or endorsed by Robinhood Markets, Inc.
+VIPR is an independent open-source project built for public on-chain data. It is not affiliated with or endorsed by Robinhood Markets, Inc.
 
-Robinhood Chain references describe the public network only. Live adapters should cite exact RPC / indexer / protocol sources and keep source limitations visible in receipts.
+Robinhood Chain references describe the public network only. Live adapters should cite the exact RPC / indexer / protocol sources they use and keep source limitations visible in receipts.
 
 ## License
 

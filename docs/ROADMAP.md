@@ -1,6 +1,6 @@
 # Roadmap
 
-## 0.1 — receipt foundation
+## 0.1 — receipt foundation ✅
 
 - deterministic scoring core
 - archetypes and badges
@@ -9,24 +9,35 @@
 - synthetic demo
 - read-only source guard
 
-## 0.2 — live Robinhood adapter
+## 0.2 — desk foundation ✅
 
-- block-pinned event ingestion
-- swap provenance rules
+- responsive browser landing page
+- full-screen browser terminal
+- interactive CLI terminal
+- live public-RPC transfer tape
+- RPC health / block pulse
+- explicit score withholding when evidence is incomplete
+
+## 0.3 — full live reputation adapter
+
+- block-pinned swap attribution
+- router / recipient provenance rules
 - market birth and liquidity context
-- local cache / snapshot format
+- historical position reconstruction
+- realized cost basis and exit quality
+- local snapshot / cache format
 
-## 0.3 — desk
+## 0.4 — social intelligence
 
 - wallet search and compare
-- watchlists
-- profile history
+- watchlists and profile history
 - share cards
+- cohort views
+- Telegram lookups and alerts
 
 ## Later
 
-- cohort views
-- Telegram lookup / alerts
 - protocol-facing reputation API
+- portable signed receipts
 
 No custody or trade execution is planned for the core intelligence repository.

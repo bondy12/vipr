@@ -4,6 +4,7 @@ import { scoreWallet, WEIGHTS } from './core/score.mjs';
 import { assignBadges, classifyArchetype } from './core/archetypes.mjs';
 import { providerPlan } from './providers/robinhood.mjs';
 import { renderJson, renderText } from './reports/render.mjs';
+import { runTerminal } from './terminal.mjs';
 
 function buildProfile(wallet) {
   const score = scoreWallet(wallet);
@@ -21,23 +22,31 @@ function buildProfile(wallet) {
 
 export async function run(args) {
   const [command = 'help', subject, ...rest] = args;
+  if (command === 'terminal') {
+    await runTerminal();
+    return;
+  }
+  if (command === 'web') {
+    await import('./web/server.mjs');
+    process.env.HOST ||= '127.0.0.1';
+    const { server } = await import('./web/server.mjs');
+    const port = Number(process.env.PORT || 4317);
+    if (!server.listening) server.listen(port, process.env.HOST, () => console.log(`VIPR desk listening on http://${process.env.HOST}:${port}`));
+    return;
+  }
   if (command === 'demo') {
     console.log(renderText(buildProfile(await loadDemoWallet())));
     return;
   }
   if (command === 'profile') {
-    if (subject !== 'demo') {
-      throw new Error('Live wallet profiling is not implemented yet. Use: vipr profile demo');
-    }
+    if (subject !== 'demo') throw new Error('Live wallet profiling is not implemented yet. Use: vipr profile demo');
     const profile = buildProfile(await loadDemoWallet());
     console.log(rest.includes('--json') ? renderJson(profile) : renderText(profile));
     return;
   }
   if (command === 'rules') {
     console.log('VIPR score dimensions');
-    for (const [name, weight] of Object.entries(WEIGHTS)) {
-      console.log(`${name.padEnd(15)} ${(weight * 100).toFixed(0)}%`);
-    }
+    for (const [name, weight] of Object.entries(WEIGHTS)) console.log(`${name.padEnd(15)} ${(weight * 100).toFixed(0)}%`);
     console.log('\nEvidence gate: <40 => 0.68x, 40–64 => 0.84x, 65+ => 1.00x');
     return;
   }
@@ -52,6 +61,8 @@ export async function run(args) {
   }
   console.log('VIPR — Every wallet leaves tracks.\n');
   console.log('Commands:');
+  console.log('  vipr terminal');
+  console.log('  vipr web');
   console.log('  vipr demo');
   console.log('  vipr profile demo [--json]');
   console.log('  vipr rules');

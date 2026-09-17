@@ -1,16 +1,22 @@
 {
   "name": "vipr-rh",
-  "version": "0.1.0",
-  "description": "Read-only wallet reputation receipts for Robinhood Chain.",
+  "version": "0.2.0",
+  "description": "Read-only wallet reputation desk, live evidence tape and terminal for Robinhood Chain.",
   "type": "module",
   "private": true,
-  "engines": { "node": ">=22" },
-  "bin": { "vipr": "./bin/vipr.mjs" },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "vipr": "./bin/vipr.mjs"
+  },
   "scripts": {
     "demo": "node ./bin/vipr.mjs demo",
     "test": "node --test",
     "verify:readonly": "node ./scripts/verify-readonly.mjs",
-    "check": "npm run verify:readonly && npm test && node ./bin/vipr.mjs doctor"
+    "check": "npm run verify:readonly && npm test && node ./bin/vipr.mjs doctor",
+    "terminal": "node ./bin/vipr.mjs terminal",
+    "web": "node ./bin/vipr.mjs web"
   },
   "license": "MIT"
 }
