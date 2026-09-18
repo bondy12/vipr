@@ -524,3 +524,134 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
   .snake-actor{width:min(300px,78vw);top:45%}
   .snake-readout{display:none!important}
 }
+
+
+/* v0.7 — final CSS-only frame animation: visible immediately, no async loader */
+.mascot-stage{
+  position:relative!important;
+  height:620px!important;
+  min-height:620px!important;
+  overflow:visible!important;
+  display:block!important;
+  background:transparent!important;
+  isolation:isolate;
+}
+.mascot-stage:before,.mascot-stage:after,
+.snake-live,.snake-live-svg,.snake-life-svg,.snake-rig,.snake-canvas,.snake-source,.snake-fallback,
+.snake-ambient,.snake-track,.snake-floor-shadow,.snake-actor:not(.snake-actor-v16){
+  display:none!important;
+  content:none!important;
+}
+.snake-roam-v16{
+  position:absolute;
+  left:50%;
+  top:47%;
+  width:min(380px,68vw);
+  aspect-ratio:1/1;
+  z-index:5;
+  transform-origin:50% 55%;
+  animation:viprSnakeRoam 26s cubic-bezier(.45,.05,.55,.95) infinite;
+  will-change:transform;
+}
+.snake-actor-v16{
+  position:absolute;
+  inset:0;
+  animation:viprSnakeBreath 3.9s ease-in-out infinite;
+  transform-origin:50% 58%;
+  will-change:transform;
+  filter:drop-shadow(0 22px 20px rgba(0,0,0,.28));
+}
+.snake-frame-v16{
+  position:absolute;
+  inset:0;
+  background-repeat:no-repeat!important;
+  background-size:400% 300%!important;
+  background-position:0% 0%;
+  background-color:transparent!important;
+  animation:viprSnakeFrames 13s steps(1,end) infinite;
+  will-change:background-position;
+}
+
+/* 12 real character poses: crawl -> rise -> watch -> coil -> crawl -> tongue -> crawl. */
+@keyframes viprSnakeFrames{
+  0%,4%{background-position:0% 0%}
+  5%,9%{background-position:33.333% 50%}
+  10%,14%{background-position:66.666% 100%}
+  15%,19%{background-position:33.333% 50%}
+  20%,24%{background-position:33.333% 0%}
+  25%,29%{background-position:66.666% 0%}
+  30%,34%{background-position:100% 0%}
+  35%,39%{background-position:100% 100%}
+  40%,44%{background-position:66.666% 50%}
+  45%,49%{background-position:0% 50%}
+  50%,54%{background-position:33.333% 50%}
+  55%,59%{background-position:0% 0%}
+  60%,64%{background-position:33.333% 100%}
+  65%,69%{background-position:0% 100%}
+  70%,74%{background-position:100% 50%}
+  75%,79%{background-position:66.666% 50%}
+  80%,84%{background-position:66.666% 100%}
+  85%,89%{background-position:33.333% 50%}
+  90%,94%{background-position:0% 0%}
+  95%,100%{background-position:33.333% 50%}
+}
+
+/* Long asymmetric route with deliberate stops and direction changes. */
+@keyframes viprSnakeRoam{
+  0%{
+    transform:translate3d(calc(-50% - 118px),calc(-50% + 26px),0) rotate(-2deg) scaleX(1)
+  }
+  16%{
+    transform:translate3d(calc(-50% + 28px),calc(-50% - 34px),0) rotate(2deg) scaleX(1)
+  }
+  25%{
+    transform:translate3d(calc(-50% + 108px),calc(-50% - 18px),0) rotate(.5deg) scaleX(1)
+  }
+  34%{
+    transform:translate3d(calc(-50% + 108px),calc(-50% - 18px),0) rotate(0deg) scaleX(1)
+  }
+  34.1%{
+    transform:translate3d(calc(-50% + 108px),calc(-50% - 18px),0) rotate(0deg) scaleX(-1)
+  }
+  52%{
+    transform:translate3d(calc(-50% - 36px),calc(-50% + 36px),0) rotate(-2deg) scaleX(-1)
+  }
+  63%{
+    transform:translate3d(calc(-50% - 126px),calc(-50% + 12px),0) rotate(1deg) scaleX(-1)
+  }
+  72%{
+    transform:translate3d(calc(-50% - 126px),calc(-50% + 12px),0) rotate(0deg) scaleX(-1)
+  }
+  72.1%{
+    transform:translate3d(calc(-50% - 126px),calc(-50% + 12px),0) rotate(0deg) scaleX(1)
+  }
+  87%{
+    transform:translate3d(calc(-50% + 52px),calc(-50% - 42px),0) rotate(2.3deg) scaleX(1)
+  }
+  100%{
+    transform:translate3d(calc(-50% - 118px),calc(-50% + 26px),0) rotate(-2deg) scaleX(1)
+  }
+}
+@keyframes viprSnakeBreath{
+  0%,100%{transform:translateY(0) scale(1)}
+  35%{transform:translateY(-2px) scale(1.006)}
+  70%{transform:translateY(1px) scale(.998)}
+}
+.snake-readout{z-index:7!important;opacity:.58}
+.mascot-caption{z-index:7!important}
+
+@media(max-width:980px){
+  .mascot-stage{height:540px!important;min-height:540px!important}
+  .snake-roam-v16{width:min(350px,64vw)}
+}
+@media(max-width:640px){
+  .mascot-stage{height:430px!important;min-height:430px!important}
+  .snake-roam-v16{width:min(300px,80vw);top:45%}
+  .snake-readout{display:none!important}
+}
+/* User explicitly wants the mascot moving; keep only this mascot animated even when OS Reduce Motion is enabled. */
+@media(prefers-reduced-motion:reduce){
+  .snake-roam-v16{animation:viprSnakeRoam 26s cubic-bezier(.45,.05,.55,.95) infinite!important}
+  .snake-actor-v16{animation:viprSnakeBreath 3.9s ease-in-out infinite!important}
+  .snake-frame-v16{animation:viprSnakeFrames 13s steps(1,end) infinite!important}
+}
