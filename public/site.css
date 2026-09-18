@@ -400,3 +400,75 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
   .snake-live{width:min(285px,76vw);top:46%}
   .snake-readout{display:none}
 }
+
+/* v0.5 — true articulated living snake, no image/background dependency */
+.mascot-stage{
+  position:relative!important;
+  height:620px!important;
+  min-height:620px!important;
+  overflow:visible!important;
+  display:block!important;
+  background:transparent!important;
+  isolation:isolate;
+}
+.mascot-stage:before,.mascot-stage:after,
+.snake-live,.snake-live-svg,.snake-band,.snake-rig,.snake-canvas,.snake-source,.snake-fallback,
+.snake-ambient,.snake-track,.snake-floor-shadow{
+  display:none!important;
+  content:none!important;
+}
+.snake-life-svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block!important;
+  overflow:visible;
+  background:transparent!important;
+  z-index:4;
+  pointer-events:none;
+}
+.snake-body-outline{
+  fill:none;
+  stroke:#052f18;
+  stroke-width:76;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.snake-body-fill{
+  fill:none;
+  stroke:url(#snakeBodyGrad);
+  stroke-width:64;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.snake-body-highlight{
+  fill:none;
+  stroke:rgba(222,255,89,.23);
+  stroke-width:9;
+  stroke-linecap:round;
+}
+.snake-life-stripe{fill:#0b5b28;opacity:.98}
+.snake-life-stripe.alt{fill:#0a4420}
+.snake-head{filter:drop-shadow(0 12px 12px rgba(0,0,0,.27))}
+.snake-eye-white{fill:#f4ffe9;stroke:#063018;stroke-width:4}
+.snake-eye-iris{fill:#b9ff22;stroke:#063018;stroke-width:3}
+.snake-pupil{fill:#07160b}
+.snake-eye-glint{fill:#fff}
+.snake-tongue{
+  fill:none;
+  stroke:#d9ff73;
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  transform-origin:3px 29px;
+}
+.snake-readout{z-index:7!important;opacity:.64}
+.mascot-caption{z-index:7!important}
+@media(max-width:980px){
+  .mascot-stage{height:540px!important;min-height:540px!important}
+}
+@media(max-width:640px){
+  .mascot-stage{height:430px!important;min-height:430px!important}
+  .snake-readout{display:none!important}
+}
