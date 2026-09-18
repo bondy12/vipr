@@ -47,15 +47,20 @@
       </div>
 
       <div class="mascot-stage reveal" id="mascot-stage" aria-label="VIPR mascot">
-        <div class="snake-ambient" aria-hidden="true">
-          <span class="snake-track track-one"></span>
-          <span class="snake-track track-two"></span>
-        </div>
-        <div class="snake-rig" id="snake-rig">
-          <canvas id="snake-canvas" class="snake-canvas" width="560" height="560" aria-label="Animated VIPR snake mascot"></canvas>
-          <img id="snake-source" class="snake-source" src="/assets/vipr-snake.png" alt="" />
-          <img class="snake-fallback" src="/assets/vipr-snake.png" alt="" aria-hidden="true" />
-          <div class="snake-floor-shadow" aria-hidden="true"></div>
+        <div class="snake-live" id="snake-live">
+          <svg class="snake-live-svg" id="snake-live-svg" viewBox="0 0 160 160" role="img" aria-label="Animated VIPR snake mascot">
+            <defs>
+              <filter id="snake-key" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+                <feColorMatrix in="SourceGraphic" type="luminanceToAlpha" result="lum"/>
+                <feComponentTransfer in="lum" result="key">
+                  <feFuncA type="linear" slope="7" intercept="-0.55"/>
+                </feComponentTransfer>
+                <feComposite in="SourceGraphic" in2="key" operator="in"/>
+              </filter>
+              <clipPath id="snake-band-0"><rect x="0" y="0.00" width="160" height="15.2"/></clipPath><clipPath id="snake-band-1"><rect x="0" y="13.34" width="160" height="15.2"/></clipPath><clipPath id="snake-band-2"><rect x="0" y="26.68" width="160" height="15.2"/></clipPath><clipPath id="snake-band-3"><rect x="0" y="40.02" width="160" height="15.2"/></clipPath><clipPath id="snake-band-4"><rect x="0" y="53.36" width="160" height="15.2"/></clipPath><clipPath id="snake-band-5"><rect x="0" y="66.70" width="160" height="15.2"/></clipPath><clipPath id="snake-band-6"><rect x="0" y="80.04" width="160" height="15.2"/></clipPath><clipPath id="snake-band-7"><rect x="0" y="93.38" width="160" height="15.2"/></clipPath><clipPath id="snake-band-8"><rect x="0" y="106.72" width="160" height="15.2"/></clipPath><clipPath id="snake-band-9"><rect x="0" y="120.06" width="160" height="15.2"/></clipPath><clipPath id="snake-band-10"><rect x="0" y="133.40" width="160" height="15.2"/></clipPath><clipPath id="snake-band-11"><rect x="0" y="146.74" width="160" height="15.2"/></clipPath>
+            </defs>
+            <g id="snake-bands"><g class="snake-band" data-band="0" clip-path="url(#snake-band-0)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="1" clip-path="url(#snake-band-1)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="2" clip-path="url(#snake-band-2)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="3" clip-path="url(#snake-band-3)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="4" clip-path="url(#snake-band-4)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="5" clip-path="url(#snake-band-5)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="6" clip-path="url(#snake-band-6)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="7" clip-path="url(#snake-band-7)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="8" clip-path="url(#snake-band-8)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="9" clip-path="url(#snake-band-9)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="10" clip-path="url(#snake-band-10)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g><g class="snake-band" data-band="11" clip-path="url(#snake-band-11)"><image href="/assets/vipr-snake.png" x="0" y="0" width="160" height="160" filter="url(#snake-key)"/></g></g>
+          </svg>
         </div>
         <div class="snake-readout readout-left"><small>TRACKING</small><b>WALLET TAPE</b></div>
         <div class="snake-readout readout-right"><small>MODE</small><b>READ ONLY</b></div>

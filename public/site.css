@@ -353,3 +353,50 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
   .snake-canvas{display:block!important}
   .snake-fallback{display:none!important;opacity:0!important}
 }
+
+/* v0.4 — browser-native articulated snake; no canvas, no fallback rectangle */
+.mascot-stage{
+  position:relative;
+  height:620px;
+  min-height:620px;
+  overflow:visible;
+  display:block;
+  background:transparent!important;
+  isolation:isolate;
+}
+.mascot-stage:before,.mascot-stage:after,
+.snake-ambient,.snake-track,.snake-rig,.snake-canvas,.snake-source,.snake-fallback,.snake-floor-shadow{
+  display:none!important;
+  content:none!important;
+}
+.snake-live{
+  position:absolute;
+  left:50%;
+  top:48%;
+  width:min(350px,64vw);
+  transform:translate3d(-50%,-50%,0);
+  transform-origin:50% 62%;
+  will-change:transform;
+  z-index:4;
+}
+.snake-live-svg{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+  background:transparent!important;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 22px 18px rgba(0,0,0,.24));
+}
+.snake-band{will-change:transform}
+.snake-readout{z-index:6;opacity:.58}
+.mascot-caption{z-index:6}
+@media(max-width:980px){
+  .mascot-stage{height:540px;min-height:540px}
+  .snake-live{width:min(325px,60vw)}
+}
+@media(max-width:640px){
+  .mascot-stage{height:430px;min-height:430px}
+  .snake-live{width:min(285px,76vw);top:46%}
+  .snake-readout{display:none}
+}
