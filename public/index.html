@@ -55,7 +55,7 @@
                 <feComponentTransfer in="lum" result="key">
                   <feFuncA type="linear" slope="7" intercept="-0.55"/>
                 </feComponentTransfer>
-                <feComposite in="SourceGraphic" in2="key" operator="in"/>
+                <feMorphology in="key" operator="erode" radius="1" result="eroded"/><feMorphology in="eroded" operator="dilate" radius="1" result="clean"/><feComposite in="SourceGraphic" in2="clean" operator="in"/>
               </filter>
               <clipPath id="snake-band-0"><rect x="0" y="0.00" width="160" height="15.2"/></clipPath><clipPath id="snake-band-1"><rect x="0" y="13.34" width="160" height="15.2"/></clipPath><clipPath id="snake-band-2"><rect x="0" y="26.68" width="160" height="15.2"/></clipPath><clipPath id="snake-band-3"><rect x="0" y="40.02" width="160" height="15.2"/></clipPath><clipPath id="snake-band-4"><rect x="0" y="53.36" width="160" height="15.2"/></clipPath><clipPath id="snake-band-5"><rect x="0" y="66.70" width="160" height="15.2"/></clipPath><clipPath id="snake-band-6"><rect x="0" y="80.04" width="160" height="15.2"/></clipPath><clipPath id="snake-band-7"><rect x="0" y="93.38" width="160" height="15.2"/></clipPath><clipPath id="snake-band-8"><rect x="0" y="106.72" width="160" height="15.2"/></clipPath><clipPath id="snake-band-9"><rect x="0" y="120.06" width="160" height="15.2"/></clipPath><clipPath id="snake-band-10"><rect x="0" y="133.40" width="160" height="15.2"/></clipPath><clipPath id="snake-band-11"><rect x="0" y="146.74" width="160" height="15.2"/></clipPath>
             </defs>
