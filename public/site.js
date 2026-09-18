@@ -6,7 +6,6 @@ const short=(a)=>a?`${a.slice(0,6)}…${a.slice(-4)}`:'—';
 
 const glow=$('.cursor-glow');
 window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
-// VIPR hero mascot motion is CSS-only for cross-browser reliability.
 
 const io=new IntersectionObserver(entries=>entries.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.14});
 $$('.reveal').forEach(el=>io.observe(el));

@@ -655,3 +655,65 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1
   .snake-actor-v16{animation:viprSnakeBreath 3.9s ease-in-out infinite!important}
   .snake-frame-v16{animation:viprSnakeFrames 13s steps(1,end) infinite!important}
 }
+
+/* FINAL VIPR MASCOT — rendered motion from the approved preview.
+   No canvas, no generated SVG worm, no sprite slicing, no glow layer. */
+.mascot-stage-final{
+  position:relative!important;
+  height:620px!important;
+  min-height:620px!important;
+  overflow:hidden!important;
+  display:block!important;
+  background:transparent!important;
+  isolation:isolate;
+}
+.mascot-stage-final:before,.mascot-stage-final:after,
+.mascot-stage-final .snake-roam-v16,
+.mascot-stage-final .snake-actor-v16,
+.mascot-stage-final .snake-frame-v16,
+.mascot-stage-final .snake-live,
+.mascot-stage-final .snake-live-svg,
+.mascot-stage-final .snake-life-svg,
+.mascot-stage-final .snake-rig,
+.mascot-stage-final .snake-canvas,
+.mascot-stage-final .snake-source,
+.mascot-stage-final .snake-fallback,
+.mascot-stage-final .snake-ambient,
+.mascot-stage-final .snake-track,
+.mascot-stage-final .snake-floor-shadow,
+.mascot-stage-final .snake-readout{
+  display:none!important;
+  content:none!important;
+}
+.snake-video-final{
+  position:absolute;
+  z-index:4;
+  left:50%;
+  top:47%;
+  width:min(720px,100%);
+  height:auto;
+  transform:translate(-50%,-50%);
+  display:block;
+  border:0;
+  outline:0;
+  background:#050806;
+  object-fit:contain;
+  pointer-events:none;
+  opacity:1;
+  filter:none!important;
+  mix-blend-mode:normal!important;
+}
+.mascot-stage-final .mascot-caption{
+  z-index:7!important;
+  left:5%;
+  right:5%;
+  bottom:4%;
+}
+@media(max-width:980px){
+  .mascot-stage-final{height:540px!important;min-height:540px!important}
+  .snake-video-final{width:min(660px,104%)}
+}
+@media(max-width:640px){
+  .mascot-stage-final{height:430px!important;min-height:430px!important}
+  .snake-video-final{width:116%;top:45%}
+}
