@@ -7,219 +7,125 @@ const short=(a)=>a?`${a.slice(0,6)}…${a.slice(-4)}`:'—';
 const glow=$('.cursor-glow');
 window.addEventListener('pointermove',e=>{if(glow){glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'}});
 const stage=$('#mascot-stage');
-const snakeSvg=$('#snake-life-svg');
-const bodyOutline=$('#snake-body-outline');
-const bodyFill=$('#snake-body-fill');
-const bodyHighlight=$('#snake-body-highlight');
-const stripeLayer=$('#snake-stripes');
-const snakeHead=$('#snake-head');
-const pupilLeft=$('#snake-pupil-left');
-const pupilRight=$('#snake-pupil-right');
-const snakeTongue=$('#snake-tongue');
+const actor=$('#snake-actor');
+const layerA=$('#snake-frame-a');
+const layerB=$('#snake-frame-b');
 
-if(stage&&snakeSvg&&bodyOutline&&bodyFill&&snakeHead&&stripeLayer){
-  const NS='http://www.w3.org/2000/svg';
+if(stage&&actor&&layerA&&layerB){
+  const framePos=[
+    ['0%','0%'],['33.333%','0%'],['66.666%','0%'],['100%','0%'],
+    ['0%','50%'],['33.333%','50%'],['66.666%','50%'],['100%','50%'],
+    ['0%','100%'],['33.333%','100%'],['66.666%','100%'],['100%','100%']
+  ];
+  const sequences={
+    crawl:[0,5,10,5,1,5],
+    crawl2:[10,5,0,5,1,5],
+    watch:[1,2,3,11,7,11,3,2],
+    coil:[6,4,8,3,7,3,4,6],
+    turn:[10,5,1,9,7,3,2,1]
+  };
+
+  let active=layerA, hidden=layerB, frame=0;
   let seed=0x51A7E;
   const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
   const pick=(a,b)=>a+(b-a)*rand();
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   const ease=(v,t,dt,s)=>v+(t-v)*(1-Math.exp(-dt*s));
 
-  const stripes=[];
-  for(let i=0;i<11;i++){
-    const e=document.createElementNS(NS,'ellipse');
-    e.setAttribute('class','snake-life-stripe'+(i%2?' alt':''));
-    stripeLayer.appendChild(e);
-    stripes.push(e);
-  }
-
   const s={
-    x:610,y:305,vx:0,vy:0,angle:0,targetX:720,targetY:300,
-    speed:58,targetSpeed:58,mode:'crawl',next:0,phase:pick(0,6.28),
-    lookX:0,lookY:0,targetLookX:0,targetLookY:0,
-    lift:0,targetLift:0,lastTongue:0,tongueUntil:0,side:1
+    x:0,y:0,tx:0,ty:0,vx:0,vy:0,
+    dir:1,rot:0,trot:0,
+    mode:'watch',seq:sequences.watch,seqIndex:0,nextFrame:0,nextMode:0,
+    px:0,py:0,tpx:0,tpy:0
   };
 
-  const history=[];
-  for(let i=0;i<90;i++){
-    history.push({x:s.x-i*5.2,y:s.y+Math.sin(i*.25)*18});
-  }
-
-  const choose=(now)=>{
+  const setFrame=(el,n)=>{
+    const p=framePos[n];
+    el.style.backgroundPosition=p[0]+' '+p[1];
+  };
+  const swapFrame=(n)=>{
+    if(n===frame)return;
+    setFrame(hidden,n);
+    hidden.style.opacity='1';
+    active.style.opacity='0';
+    const old=active;active=hidden;hidden=old;
+    frame=n;
+  };
+  const chooseMode=(now)=>{
     const r=rand();
-    s.mode=r<.18?'watch':r<.31?'pause':r<.82?'crawl':'turn';
-
-    if(s.mode==='crawl'){
-      s.side*=-1;
-      s.targetX=pick(455,770)+(s.side*pick(10,45));
-      s.targetY=pick(205,415);
-      s.targetSpeed=pick(48,82);
-      s.targetLookX=pick(-2.5,2.5);
-      s.targetLookY=pick(-1.5,1.5);
-      s.targetLift=pick(-2,3);
-      s.next=now+pick(2300,4600);
-    }else if(s.mode==='turn'){
-      s.targetX=clamp(900-s.x+pick(-70,70),440,790);
-      s.targetY=clamp(620-s.y+pick(-65,65),205,425);
-      s.targetSpeed=pick(35,58);
-      s.targetLookX=pick(-4,4);
-      s.targetLookY=pick(-2,2);
-      s.targetLift=pick(-1,4);
-      s.next=now+pick(1100,1900);
-    }else if(s.mode==='watch'){
-      s.targetX=s.x;s.targetY=s.y;s.targetSpeed=0;
-      s.targetLookX=pick(-5,5);
-      s.targetLookY=pick(-2.5,2.5);
-      s.targetLift=pick(-5,4);
-      s.next=now+pick(1200,2600);
-    }else{
-      s.targetX=s.x;s.targetY=s.y;s.targetSpeed=0;
-      s.targetLookX=pick(-2,2);
-      s.targetLookY=pick(-1.5,1.5);
-      s.targetLift=0;
-      s.next=now+pick(650,1400);
-    }
-
-    if(now-s.lastTongue>2500 && rand()>.55){
-      s.tongueUntil=now+pick(220,430);
-      s.lastTongue=now;
-    }
-  };
-
-  const smoothPath=(pts)=>{
-    if(!pts.length)return'';
-    if(pts.length===1)return 'M '+pts[0].x+' '+pts[0].y;
-    let d='M '+pts[0].x.toFixed(1)+' '+pts[0].y.toFixed(1);
-    for(let i=1;i<pts.length-1;i++){
-      const p=pts[i],n=pts[i+1];
-      const mx=(p.x+n.x)/2,my=(p.y+n.y)/2;
-      d+=' Q '+p.x.toFixed(1)+' '+p.y.toFixed(1)+' '+mx.toFixed(1)+' '+my.toFixed(1);
-    }
-    const last=pts[pts.length-1];
-    d+=' T '+last.x.toFixed(1)+' '+last.y.toFixed(1);
-    return d;
-  };
-
-  const trailSamples=(spacing,count)=>{
-    const out=[];
-    if(!history.length)return out;
-    out.push(history[0]);
-    let acc=0,last=history[0],need=spacing;
-    for(let i=1;i<history.length&&out.length<count;i++){
-      const p=history[i];
-      acc+=Math.hypot(p.x-last.x,p.y-last.y);
-      if(acc>=need){out.push(p);need+=spacing}
-      last=p;
-    }
-    return out;
-  };
-
-  const trimHistory=()=>{
-    let total=0;
-    for(let i=1;i<history.length;i++){
-      total+=Math.hypot(history[i].x-history[i-1].x,history[i].y-history[i-1].y);
-      if(total>455){history.length=i+1;break}
-    }
-  };
-
-  let last=performance.now();
-  choose(last);
-
-  const animate=(now)=>{
-    const dt=Math.min(.034,Math.max(.001,(now-last)/1000));last=now;
-    if(now>=s.next)choose(now);
-
-    const dx=s.targetX-s.x,dy=s.targetY-s.y;
-    const dist=Math.hypot(dx,dy);
-    const ux=dist>1?dx/dist:Math.cos(s.angle);
-    const uy=dist>1?dy/dist:Math.sin(s.angle);
-
-    s.speed=ease(s.speed,s.targetSpeed,dt,1.8);
-    s.phase+=dt*(2.2+s.speed*.045);
-
-    const sideWave=Math.sin(s.phase)*Math.min(22,5+s.speed*.22);
-    const px=-uy,py=ux;
-    const desiredVx=ux*s.speed+px*sideWave;
-    const desiredVy=(uy*s.speed+py*sideWave)*.63;
-
-    s.vx=ease(s.vx,desiredVx,dt,2.45);
-    s.vy=ease(s.vy,desiredVy,dt,2.35);
-
-    if(s.mode==='watch'||s.mode==='pause'){
-      s.vx*=Math.pow(.035,dt);
-      s.vy*=Math.pow(.035,dt);
-    }
-
-    s.x=clamp(s.x+s.vx*dt,420,800);
-    s.y=clamp(s.y+s.vy*dt,175,445);
-
-    if(dist<42&&s.mode==='crawl')choose(now);
-
-    const prev=history[0];
-    if(!prev||Math.hypot(s.x-prev.x,s.y-prev.y)>.9){
-      history.unshift({x:s.x,y:s.y});
-      trimHistory();
-    }
-
-    const headSpeed=Math.hypot(s.vx,s.vy);
-    if(headSpeed>1.5){
-      const targetAngle=Math.atan2(s.vy,s.vx);
-      let da=Math.atan2(Math.sin(targetAngle-s.angle),Math.cos(targetAngle-s.angle));
-      s.angle+=da*(1-Math.exp(-dt*5.2));
-    }
-
-    const samples=trailSamples(16,31).reverse();
-    const bodyD=smoothPath(samples);
-    bodyOutline.setAttribute('d',bodyD);
-    bodyFill.setAttribute('d',bodyD);
-
-    const hi=samples.slice(Math.max(0,samples.length-13)).map((p,i)=>({x:p.x-4,y:p.y-7}));
-    bodyHighlight.setAttribute('d',smoothPath(hi));
-
-    const stripeSamples=trailSamples(34,12);
-    stripes.forEach((e,i)=>{
-      const p=stripeSamples[i+1];
-      if(!p){e.setAttribute('opacity','0');return}
-      e.setAttribute('opacity',i<9?'1':'.82');
-      const q=stripeSamples[Math.min(i+2,stripeSamples.length-1)]||p;
-      const a=Math.atan2(q.y-p.y,q.x-p.x)*180/Math.PI;
-      const taper=Math.max(.43,1-i*.055);
-      e.setAttribute('cx',p.x.toFixed(1));
-      e.setAttribute('cy',p.y.toFixed(1));
-      e.setAttribute('rx',(24*taper).toFixed(1));
-      e.setAttribute('ry',(11.5*taper).toFixed(1));
-      e.setAttribute('transform','rotate('+(a+90).toFixed(1)+' '+p.x.toFixed(1)+' '+p.y.toFixed(1)+')');
-    });
-
-    s.lookX=ease(s.lookX,s.targetLookX,dt,3.2);
-    s.lookY=ease(s.lookY,s.targetLookY,dt,3.2);
-    s.lift=ease(s.lift,s.targetLift,dt,2.4);
+    if(r<.18)s.mode='watch';
+    else if(r<.32)s.mode='coil';
+    else if(r<.78)s.mode='crawl';
+    else s.mode='turn';
 
     if(s.mode==='watch'){
-      s.targetLookX=Math.sin(now*.0021)*4.7;
-      s.targetLookY=Math.cos(now*.0017)*2.1;
-      s.targetLift=Math.sin(now*.0012)*3.2-1.5;
-    }else if(s.mode==='crawl'){
-      s.targetLookX=clamp(s.vx/22,-4,4);
-      s.targetLookY=clamp(s.vy/32,-2,2);
+      s.seq=sequences.watch;s.tx=pick(-28,28);s.ty=pick(-18,18);s.trot=pick(-2,2);
+      s.nextMode=now+pick(1800,3400);
+    }else if(s.mode==='coil'){
+      s.seq=sequences.coil;s.tx=pick(-42,42);s.ty=pick(-18,22);s.trot=pick(-3,3);
+      s.nextMode=now+pick(1400,2400);
+    }else if(s.mode==='turn'){
+      s.seq=sequences.turn;s.dir*=-1;s.tx=s.dir*pick(65,118);s.ty=pick(-48,48);s.trot=s.dir*pick(3,6);
+      s.nextMode=now+pick(1000,1750);
+    }else{
+      s.seq=rand()>.5?sequences.crawl:sequences.crawl2;
+      s.dir*=-1;
+      s.tx=s.dir*pick(82,132);s.ty=pick(-52,52);s.trot=s.dir*pick(1.5,4);
+      s.nextMode=now+pick(2500,4600);
+    }
+    s.seqIndex=0;
+    s.nextFrame=now;
+  };
+
+  const loadSprite=async()=>{
+    try{
+      const urls=Array.from({length:7},(_,i)=>'/sprite/s'+i+'.txt?v=1');
+      const parts=await Promise.all(urls.map(u=>fetch(u,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('sprite');return r.text()})));
+      const src='data:image/webp;base64,'+parts.join('');
+      layerA.style.backgroundImage='url("'+src+'")';
+      layerB.style.backgroundImage='url("'+src+'")';
+      setFrame(layerA,1);setFrame(layerB,1);
+      layerA.style.opacity='1';layerB.style.opacity='0';
+      actor.classList.add('ready');
+      frame=1;
+      requestAnimationFrame(animate);
+    }catch(err){
+      actor.classList.add('failed');
+    }
+  };
+
+  stage.addEventListener('pointermove',e=>{
+    const r=stage.getBoundingClientRect();
+    s.tpx=((e.clientX-r.left)/r.width-.5)*8;
+    s.tpy=((e.clientY-r.top)/r.height-.5)*5;
+  });
+  stage.addEventListener('pointerleave',()=>{s.tpx=0;s.tpy=0});
+
+  let last=performance.now();
+  chooseMode(last);
+  const animate=(now)=>{
+    const dt=Math.min(.034,(now-last)/1000);last=now;
+    if(now>=s.nextMode)chooseMode(now);
+
+    if(now>=s.nextFrame){
+      swapFrame(s.seq[s.seqIndex%s.seq.length]);
+      s.seqIndex++;
+      const fast=s.mode==='crawl'||s.mode==='turn';
+      s.nextFrame=now+(fast?pick(105,155):pick(155,260));
     }
 
-    const lookAngle=s.mode==='watch'?s.lookX*1.8:0;
-    const headDeg=s.angle*180/Math.PI+lookAngle;
-    snakeHead.setAttribute('transform','translate('+s.x.toFixed(1)+' '+(s.y+s.lift).toFixed(1)+') rotate('+headDeg.toFixed(2)+')');
+    s.px=ease(s.px,s.tpx,dt,4.2);s.py=ease(s.py,s.tpy,dt,4.2);
+    s.x=ease(s.x,s.tx,dt,s.mode==='crawl'?1.0:1.65);
+    s.y=ease(s.y,s.ty,dt,s.mode==='crawl'?1.15:1.8);
+    s.rot=ease(s.rot,s.trot,dt,1.9);
 
-    pupilLeft.setAttribute('cx',(-20+s.lookX).toFixed(1));
-    pupilLeft.setAttribute('cy',(-9+s.lookY).toFixed(1));
-    pupilRight.setAttribute('cx',(19+s.lookX).toFixed(1));
-    pupilRight.setAttribute('cy',(-9+s.lookY).toFixed(1));
-
-    const tongueOn=now<s.tongueUntil;
-    snakeTongue.style.opacity=tongueOn?'1':'.08';
-    snakeTongue.setAttribute('transform','scale(1 '+(tongueOn?'1':'.24')+')');
-
+    const breathe=1+Math.sin(now*.0021)*.008;
+    actor.style.transform=
+      'translate3d(calc(-50% + '+(s.x+s.px).toFixed(1)+'px),calc(-50% + '+(s.y+s.py).toFixed(1)+'px),0) rotate('+s.rot.toFixed(2)+'deg) scaleX('+s.dir+') scaleY('+breathe.toFixed(4)+')';
     requestAnimationFrame(animate);
   };
-  requestAnimationFrame(animate);
+
+  loadSprite();
 }
 const io=new IntersectionObserver(entries=>entries.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');io.unobserve(x.target)}}),{threshold:.14});
 $$('.reveal').forEach(el=>io.observe(el));
