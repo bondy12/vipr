@@ -1,0 +1,23 @@
+name: Export VIPR Site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Package website files
+        uses: actions/upload-artifact@v4
+        with:
+          name: vipr-site
+          path: |
+            public/index.html
+            public/site.css
+            public/site.js
+          if-no-files-found: error
+          retention-days: 7
