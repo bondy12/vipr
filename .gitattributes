@@ -2,3 +2,13 @@
 *.png binary
 *.gif binary
 *.mp4 binary
+*.webp binary
+
+# Deployment snapshots and legacy compatibility bundles are generated copies,
+# not the canonical source used for GitHub language statistics.
+deploy/** linguist-generated=true
+web/public/** linguist-generated=true
+public/styles-*.css linguist-generated=true
+public/styles.css linguist-generated=true
+public/app.js linguist-generated=true
+public/sprite/** linguist-generated=true
